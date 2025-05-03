@@ -1,0 +1,790 @@
+{
+    "documentation": "https://opencagedata.com/api",
+    "licenses": [
+        {
+            "name": "see attribution guide",
+            "url": "https://opencagedata.com/credits"
+        }
+    ],
+    "rate": {
+        "limit": 2500,
+        "remaining": 2495,
+        "reset": 1745020800
+    },
+    "results": [
+        {
+            6666666666666666666666666666666666666666666666
+
+
+
+
+
+
+
+
+
+
+
+            "annotations": {
+                "DMS": {
+                    "lat": "36° 21' 50.99112'' N",
+                    "lng": "6° 36' 30.34116'' E"
+                },
+                "MGRS": "32SKF8542926996",
+                "Maidenhead": "JM36hi37aj",
+                "Mercator": {
+                    "x": 735646.851,
+                    "y": 4325510.203
+                },
+                "OSM": {
+                    "edit_url": "https://www.openstreetmap.org/edit?relation=2245418#map=16/36.36416/6.60843",
+                    "note_url": "https://www.openstreetmap.org/note/new#map=16/36.36416/6.60843&layers=N",
+                    "url": "https://www.openstreetmap.org/?mlat=36.36416&mlon=6.60843#map=16/36.36416/6.60843"
+                },
+                "UN_M49": {
+                    "regions": {
+                        "AFRICA": "002",
+                        "DZ": "012",
+                        "NORTHERN_AFRICA": "015",
+                        "WORLD": "001"
+                    },
+                    "statistical_groupings": [
+                        "LEDC"
+                    ]
+                },
+                "callingcode": 213,
+                "currency": {
+                    "alternate_symbols": [
+                        "DA"
+                    ],
+                    "decimal_mark": ".",
+                    "format": "%n %u",
+                    "html_entity": "",
+                    "iso_code": "DZD",
+                    "iso_numeric": "012",
+                    "name": "Algerian Dinar",
+                    "smallest_denomination": 100,
+                    "subunit": "Centime",
+                    "subunit_to_unit": 100,
+                    "symbol": "د.ج",
+                    "symbol_first": 0,
+                    "thousands_separator": ","
+                },
+                "flag": "🇩🇿",
+                "geohash": "snkwy7uhee90u7z93t6y",
+                "qibla": 108.2,
+                "roadinfo": {
+                    "drive_on": "right",
+                    "speed_in": "km/h"
+                },
+                "sun": {
+                    "rise": {
+                        "apparent": 1744952220,
+                        "astronomical": 1744946760,
+                        "civil": 1744950600,
+                        "nautical": 1744948740
+                    },
+                    "set": {
+                        "apparent": 1744999740,
+                        "astronomical": 1745005260,
+                        "civil": 1745001360,
+                        "nautical": 1745003280
+                    }
+                },
+                "timezone": {
+                    "name": "Africa/Algiers",
+                    "now_in_dst": 0,
+                    "offset_sec": 3600,
+                    "offset_string": "+0100",
+                    "short_name": "CET"
+                },
+                "what3words": {
+                    "words": "configure.thuds.coach"
+                },
+                "wikidata": "Q187346"
+            },
+            "bounds": {
+                "northeast": {
+                    "lat": 36.4490899,
+                    "lng": 6.7665523
+                },
+                "southwest": {
+                    "lat": 36.2589259,
+                    "lng": 6.5284453
+                }
+            },
+            "components": {
+                "ISO_3166-1_alpha-2": "DZ",
+                "ISO_3166-1_alpha-3": "DZA",
+                "ISO_3166-2": [
+                    "DZ-25"
+                ],
+                "_category": "place",
+                "_normalized_city": "Constantine",
+                "_type": "city",
+                "city": "Constantine",
+                "continent": "Africa",
+                "country": "Algeria",
+                "country_code": "dz",
+                "county": "Constantine District",
+                "state": "Constantine"
+            },
+            "confidence": 4,
+            "formatted": "Constantine, Constantine District, Algeria",
+            "geometry": {
+                "lat": 36.3641642,
+                "lng": 6.6084281
+            }
+        },
+
+
+
+
+
+
+
+
+
+
+
+
+
+        {
+            "annotations": {
+                "DMS": {
+                    "lat": "36° 21' 30.29940'' N",
+                    "lng": "6° 40' 1.80264'' E"
+                },
+                "MGRS": "32SKF9068526230",
+                "Maidenhead": "JM36ii06ba",
+                "Mercator": {
+                    "x": 742185.678,
+                    "y": 4324719.13
+                },
+                "OSM": {
+                    "edit_url": "https://www.openstreetmap.org/edit?relation=1273368#map=16/36.35842/6.66717",
+                    "note_url": "https://www.openstreetmap.org/note/new#map=16/36.35842/6.66717&layers=N",
+                    "url": "https://www.openstreetmap.org/?mlat=36.35842&mlon=6.66717#map=16/36.35842/6.66717"
+                },
+                "UN_M49": {
+                    "regions": {
+                        "AFRICA": "002",
+                        "DZ": "012",
+                        "NORTHERN_AFRICA": "015",
+                        "WORLD": "001"
+                    },
+                    "statistical_groupings": [
+                        "LEDC"
+                    ]
+                },
+                "callingcode": 213,
+                "currency": {
+                    "alternate_symbols": [
+                        "DA"
+                    ],
+                    "decimal_mark": ".",
+                    "format": "%n %u",
+                    "html_entity": "",
+                    "iso_code": "DZD",
+                    "iso_numeric": "012",
+                    "name": "Algerian Dinar",
+                    "smallest_denomination": 100,
+                    "subunit": "Centime",
+                    "subunit_to_unit": 100,
+                    "symbol": "د.ج",
+                    "symbol_first": 0,
+                    "thousands_separator": ","
+                },
+                "flag": "🇩🇿",
+                "geohash": "snkwzdyghk06d246xsp1",
+                "qibla": 108.25,
+                "roadinfo": {
+                    "drive_on": "right",
+                    "speed_in": "km/h"
+                },
+                "sun": {
+                    "rise": {
+                        "apparent": 1744952220,
+                        "astronomical": 1744946700,
+                        "civil": 1744950600,
+                        "nautical": 1744948680
+                    },
+                    "set": {
+                        "apparent": 1744999740,
+                        "astronomical": 1745005260,
+                        "civil": 1745001360,
+                        "nautical": 1745003280
+                    }
+                },
+                "timezone": {
+                    "name": "Africa/Algiers",
+                    "now_in_dst": 0,
+                    "offset_sec": 3600,
+                    "offset_string": "+0100",
+                    "short_name": "CET"
+                },
+                "what3words": {
+                    "words": "surpasses.mixing.alpha"
+                },
+                "wikidata": "Q232043"
+            },
+            "bounds": {
+                "northeast": {
+                    "lat": 36.624258,
+                    "lng": 7.049318
+                },
+                "southwest": {
+                    "lat": 36.092573,
+                    "lng": 6.309629
+                }
+            },
+            "components": {
+                "ISO_3166-1_alpha-2": "DZ",
+                "ISO_3166-1_alpha-3": "DZA",
+                "ISO_3166-2": [
+                    "DZ-25"
+                ],
+                "_category": "place",
+                "_type": "state",
+                "continent": "Africa",
+                "country": "Algeria",
+                "country_code": "dz",
+                "state": "Constantine"
+            },
+            "confidence": 1,
+            "formatted": "Constantine, Algeria",
+            "geometry": {
+                "lat": 36.3584165,
+                "lng": 6.6671674
+            }
+        },
+
+
+
+
+
+
+
+
+
+
+
+
+        {
+            "annotations": {
+                "DMS": {
+                    "lat": "50° 7' 30.67932'' N",
+                    "lng": "5° 10' 12.98028'' W"
+                },
+                "MGRS": "30UUA4487354805",
+                "Maidenhead": "IO70jd90nb",
+                "Mercator": {
+                    "x": -575552.077,
+                    "y": 6435173.239
+                },
+                "OSM": {
+                    "edit_url": "https://www.openstreetmap.org/edit?relation=5886538#map=16/50.12519/-5.17027",
+                    "note_url": "https://www.openstreetmap.org/note/new#map=16/50.12519/-5.17027&layers=N",
+                    "url": "https://www.openstreetmap.org/?mlat=50.12519&mlon=-5.17027#map=16/50.12519/-5.17027"
+                },
+                "UN_M49": {
+                    "regions": {
+                        "EUROPE": "150",
+                        "GB": "826",
+                        "NORTHERN_EUROPE": "154",
+                        "WORLD": "001"
+                    },
+                    "statistical_groupings": [
+                        "MEDC"
+                    ]
+                },
+                "callingcode": 44,
+                "currency": {
+                    "alternate_symbols": [],
+                    "decimal_mark": ".",
+                    "html_entity": "&#x00A3;",
+                    "iso_code": "GBP",
+                    "iso_numeric": "826",
+                    "name": "British Pound",
+                    "smallest_denomination": 1,
+                    "subunit": "Penny",
+                    "subunit_to_unit": 100,
+                    "symbol": "£",
+                    "symbol_first": 1,
+                    "thousands_separator": ","
+                },
+                "flag": "🇬🇧",
+                "geohash": "gbum4m507umt6nu89uts",
+                "qibla": 112.38,
+                "roadinfo": {
+                    "drive_on": "left",
+                    "speed_in": "mph"
+                },
+                "sun": {
+                    "rise": {
+                        "apparent": 1744953720,
+                        "astronomical": 1744946220,
+                        "civil": 1744951680,
+                        "nautical": 1744949100
+                    },
+                    "set": {
+                        "apparent": 1745003940,
+                        "astronomical": 1745011500,
+                        "civil": 1745005980,
+                        "nautical": 1745008620
+                    }
+                },
+                "timezone": {
+                    "name": "Europe/London",
+                    "now_in_dst": 1,
+                    "offset_sec": 3600,
+                    "offset_string": "+0100",
+                    "short_name": "BST"
+                },
+                "what3words": {
+                    "words": "salary.hospitals.adapt"
+                },
+                "wikidata": "Q2070635"
+            },
+            "bounds": {
+                "northeast": {
+                    "lat": 50.1626369,
+                    "lng": -5.125429
+                },
+                "southwest": {
+                    "lat": 50.0877807,
+                    "lng": -5.2137434
+                }
+            },
+            "components": {
+                "ISO_3166-1_alpha-2": "GB",
+                "ISO_3166-1_alpha-3": "GBR",
+                "ISO_3166-2": [
+                    "GB-ENG",
+                    "GB-CON"
+                ],
+                "_category": "place",
+                "_normalized_city": "Constantine",
+                "_type": "neighbourhood",
+                "continent": "Europe",
+                "country": "United Kingdom",
+                "country_code": "gb",
+                "county": "Cornwall",
+                "county_code": "CON",
+                "state": "England",
+                "state_code": "ENG",
+                "suburb": "Constantine"
+            },
+            "confidence": 7,
+            "formatted": "Constantine, Cornwall, England, United Kingdom",
+            "geometry": {
+                "lat": 50.1251887,
+                "lng": -5.1702723
+            }
+        },
+
+
+
+
+
+
+
+
+
+
+
+
+        {
+            "annotations": {
+                "DMS": {
+                    "lat": "41° 50' 28.17708'' N",
+                    "lng": "85° 40' 6.96936'' W"
+                },
+                "FIPS": {
+                    "county": "26149",
+                    "state": "26"
+                },
+                "MGRS": "16TFM1053832997",
+                "Maidenhead": "EN71du91sv",
+                "Mercator": {
+                    "x": -9536585.218,
+                    "y": 5108705.067
+                },
+                "OSM": {
+                    "edit_url": "https://www.openstreetmap.org/edit?relation=134944#map=16/41.84116/-85.66860",
+                    "note_url": "https://www.openstreetmap.org/note/new#map=16/41.84116/-85.66860&layers=N",
+                    "url": "https://www.openstreetmap.org/?mlat=41.84116&mlon=-85.66860#map=16/41.84116/-85.66860"
+                },
+                "UN_M49": {
+                    "regions": {
+                        "AMERICAS": "019",
+                        "NORTHERN_AMERICA": "021",
+                        "US": "840",
+                        "WORLD": "001"
+                    },
+                    "statistical_groupings": [
+                        "MEDC"
+                    ]
+                },
+                "callingcode": 1,
+                "currency": {
+                    "alternate_symbols": [
+                        "US$"
+                    ],
+                    "decimal_mark": ".",
+                    "disambiguate_symbol": "US$",
+                    "html_entity": "$",
+                    "iso_code": "USD",
+                    "iso_numeric": "840",
+                    "name": "United States Dollar",
+                    "smallest_denomination": 1,
+                    "subunit": "Cent",
+                    "subunit_to_unit": 100,
+                    "symbol": "$",
+                    "symbol_first": 1,
+                    "thousands_separator": ","
+                },
+                "flag": "🇺🇸",
+                "geohash": "dp7n48fn2vegpwvhsz59",
+                "qibla": 50.15,
+                "roadinfo": {
+                    "drive_on": "right",
+                    "speed_in": "mph"
+                },
+                "sun": {
+                    "rise": {
+                        "apparent": 1744973880,
+                        "astronomical": 1744967820,
+                        "civil": 1744972140,
+                        "nautical": 1744970040
+                    },
+                    "set": {
+                        "apparent": 1744935960,
+                        "astronomical": 1744942080,
+                        "civil": 1744937760,
+                        "nautical": 1744939860
+                    }
+                },
+                "timezone": {
+                    "name": "America/Detroit",
+                    "now_in_dst": 1,
+                    "offset_sec": -14400,
+                    "offset_string": "-0400",
+                    "short_name": "EDT"
+                },
+                "what3words": {
+                    "words": "loosed.honeybees.amphibious"
+                },
+                "wikidata": "Q580050"
+            },
+            "bounds": {
+                "northeast": {
+                    "lat": 41.849385,
+                    "lng": -85.643548
+                },
+                "southwest": {
+                    "lat": 41.8238882,
+                    "lng": -85.6781433
+                }
+            },
+            "components": {
+                "ISO_3166-1_alpha-2": "US",
+                "ISO_3166-1_alpha-3": "USA",
+                "ISO_3166-2": [
+                    "US-MI"
+                ],
+                "_category": "place",
+                "_normalized_city": "Constantine",
+                "_type": "village",
+                "continent": "North America",
+                "country": "United States",
+                "country_code": "us",
+                "county": "Saint Joseph County",
+                "municipality": "Constantine Township",
+                "postcode": "49042",
+                "state": "Michigan",
+                "state_code": "MI",
+                "village": "Constantine"
+            },
+            "confidence": 7,
+            "formatted": "Constantine, Constantine Township, MI 49042, United States of America",
+            "geometry": {
+                "lat": 41.8411603,
+                "lng": -85.6686026
+            }
+        },
+
+
+
+
+
+
+
+
+
+        
+        {
+            "annotations": {
+                "DMS": {
+                    "lat": "46° 55' 5.49552'' N",
+                    "lng": "7° 0' 41.42376'' E"
+                },
+                "MGRS": "32TLS4859597992",
+                "Maidenhead": "JN36mw10ji",
+                "Mercator": {
+                    "x": 780517.344,
+                    "y": 5897508.634
+                },
+                "NUTS": {
+                    "NUTS0": {
+                        "code": "CH"
+                    },
+                    "NUTS1": {
+                        "code": "CH0"
+                    },
+                    "NUTS2": {
+                        "code": "CH01"
+                    },
+                    "NUTS3": {
+                        "code": "CH011"
+                    }
+                },
+                "OSM": {
+                    "edit_url": "https://www.openstreetmap.org/edit?node=3741169967#map=16/46.91819/7.01151",
+                    "note_url": "https://www.openstreetmap.org/note/new#map=16/46.91819/7.01151&layers=N",
+                    "url": "https://www.openstreetmap.org/?mlat=46.91819&mlon=7.01151#map=16/46.91819/7.01151"
+                },
+                "UN_M49": {
+                    "regions": {
+                        "CH": "756",
+                        "EUROPE": "150",
+                        "WESTERN_EUROPE": "155",
+                        "WORLD": "001"
+                    },
+                    "statistical_groupings": [
+                        "MEDC"
+                    ]
+                },
+                "callingcode": 41,
+                "currency": {
+                    "alternate_symbols": [
+                        "SFr",
+                        "Fr"
+                    ],
+                    "decimal_mark": ".",
+                    "format": "%u %n",
+                    "html_entity": "",
+                    "iso_code": "CHF",
+                    "iso_numeric": "756",
+                    "name": "Swiss Franc",
+                    "smallest_denomination": 5,
+                    "subunit": "Rappen",
+                    "subunit_to_unit": 100,
+                    "symbol": "CHF",
+                    "symbol_first": 1,
+                    "thousands_separator": ","
+                },
+                "flag": "🇨🇭",
+                "geohash": "u0kfzt1w7cnk0hs01p62",
+                "qibla": 122.54,
+                "roadinfo": {
+                    "drive_on": "right",
+                    "speed_in": "km/h"
+                },
+                "sun": {
+                    "rise": {
+                        "apparent": 1744951200,
+                        "astronomical": 1744944360,
+                        "civil": 1744949280,
+                        "nautical": 1744946880
+                    },
+                    "set": {
+                        "apparent": 1745000640,
+                        "astronomical": 1745007480,
+                        "civil": 1745002560,
+                        "nautical": 1745004900
+                    }
+                },
+                "timezone": {
+                    "name": "Europe/Zurich",
+                    "now_in_dst": 1,
+                    "offset_sec": 7200,
+                    "offset_string": "+0200",
+                    "short_name": "CEST"
+                },
+                "what3words": {
+                    "words": "scare.jams.earphones"
+                },
+                "wikidata": "Q633554"
+            },
+            "bounds": {
+                "northeast": {
+                    "lat": 46.9381932,
+                    "lng": 7.0315066
+                },
+                "southwest": {
+                    "lat": 46.8981932,
+                    "lng": 6.9915066
+                }
+            },
+            "components": {
+                "ISO_3166-1_alpha-2": "CH",
+                "ISO_3166-1_alpha-3": "CHE",
+                "ISO_3166-2": [
+                    "CH-VD"
+                ],
+                "_category": "place",
+                "_normalized_city": "Vully-les-Lacs",
+                "_type": "village",
+                "city": "Vully-les-Lacs",
+                "continent": "Europe",
+                "country": "Switzerland",
+                "country_code": "ch",
+                "county": "District de la Broye-Vully",
+                "local_administrative_area": "Vully-les-Lacs",
+                "postcode": "1587",
+                "state": "Vaud",
+                "state_code": "VD",
+                "village": "Constantine"
+            },
+            "confidence": 7,
+            "formatted": "1587 Vully-les-Lacs, Switzerland",
+            "geometry": {
+                "lat": 46.9181932,
+                "lng": 7.0115066
+            }
+        },
+        {
+            "annotations": {
+                "DMS": {
+                    "lat": "37° 40' 31.21788'' N",
+                    "lng": "86° 14' 10.90032'' W"
+                },
+                "FIPS": {
+                    "county": "21027",
+                    "state": "21"
+                },
+                "MGRS": "16SEG6734070068",
+                "Maidenhead": "EM67vq12pb",
+                "Mercator": {
+                    "x": -9599787.817,
+                    "y": 4507544.959
+                },
+                "OSM": {
+                    "edit_url": "https://www.openstreetmap.org/edit?node=153777365#map=16/37.67534/-86.23636",
+                    "note_url": "https://www.openstreetmap.org/note/new#map=16/37.67534/-86.23636&layers=N",
+                    "url": "https://www.openstreetmap.org/?mlat=37.67534&mlon=-86.23636#map=16/37.67534/-86.23636"
+                },
+                "UN_M49": {
+                    "regions": {
+                        "AMERICAS": "019",
+                        "NORTHERN_AMERICA": "021",
+                        "US": "840",
+                        "WORLD": "001"
+                    },
+                    "statistical_groupings": [
+                        "MEDC"
+                    ]
+                },
+                "callingcode": 1,
+                "currency": {
+                    "alternate_symbols": [
+                        "US$"
+                    ],
+                    "decimal_mark": ".",
+                    "disambiguate_symbol": "US$",
+                    "html_entity": "$",
+                    "iso_code": "USD",
+                    "iso_numeric": "840",
+                    "name": "United States Dollar",
+                    "smallest_denomination": 1,
+                    "subunit": "Cent",
+                    "subunit_to_unit": 100,
+                    "symbol": "$",
+                    "symbol_first": 1,
+                    "thousands_separator": ","
+                },
+                "flag": "🇺🇸",
+                "geohash": "dndwmdsdg0h7pc0fkpn2",
+                "qibla": 50.33,
+                "roadinfo": {
+                    "drive_on": "right",
+                    "speed_in": "mph"
+                },
+                "sun": {
+                    "rise": {
+                        "apparent": 1744974360,
+                        "astronomical": 1744968720,
+                        "civil": 1744972740,
+                        "nautical": 1744970760
+                    },
+                    "set": {
+                        "apparent": 1744935780,
+                        "astronomical": 1744941420,
+                        "civil": 1744937400,
+                        "nautical": 1744939380
+                    }
+                },
+                "timezone": {
+                    "name": "America/Chicago",
+                    "now_in_dst": 1,
+                    "offset_sec": -18000,
+                    "offset_string": "-0500",
+                    "short_name": "CDT"
+                },
+                "what3words": {
+                    "words": "reduction.chocolates.typewriter"
+                },
+                "wikidata": "Q19461130"
+            },
+            "bounds": {
+                "northeast": {
+                    "lat": 37.6953383,
+                    "lng": -86.2163612
+                },
+                "southwest": {
+                    "lat": 37.6553383,
+                    "lng": -86.2563612
+                }
+            },
+            "components": {
+                "ISO_3166-1_alpha-2": "US",
+                "ISO_3166-1_alpha-3": "USA",
+                "ISO_3166-2": [
+                    "US-KY"
+                ],
+                "_category": "place",
+                "_normalized_city": "Constantine",
+                "_type": "hamlet",
+                "continent": "North America",
+                "country": "United States",
+                "country_code": "us",
+                "county": "Breckinridge County",
+                "hamlet": "Constantine",
+                "postcode": "40140",
+                "state": "Kentucky",
+                "state_code": "KY"
+            },
+            "confidence": 7,
+            "formatted": "Constantine, Breckinridge County, KY 40140, United States of America",
+            "geometry": {
+                "lat": 37.6753383,
+                "lng": -86.2363612
+            }
+        }
+    ],
+    "status": {
+        "code": 200,
+        "message": "OK"
+    },
+    "stay_informed": {
+        "blog": "https://blog.opencagedata.com",
+        "mastodon": "https://en.osm.town/@opencage"
+    },
+    "thanks": "For using an OpenCage API",
+    "timestamp": {
+        "created_http": "Fri, 18 Apr 2025 21:33:39 GMT",
+        "created_unix": 1745012019
+    },
+    "total_results": 6
+}
