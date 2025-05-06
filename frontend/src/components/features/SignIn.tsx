@@ -9,7 +9,7 @@ import { LoginErrorsProps } from "../../types/error"
 
 const SignIn = () => {
 
-    const {theme} = useContext(MainContext)
+    const {theme, refetchUserInfo} = useContext(MainContext)
     const navigate = useNavigate()
     const [error, setError] = useState<LoginErrorsProps>({
         status: "",
@@ -53,6 +53,7 @@ const SignIn = () => {
             } 
 
             if (res.status === 200) {
+                await refetchUserInfo();
                 navigate("/dashboard")
             }
 

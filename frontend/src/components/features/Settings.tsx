@@ -79,7 +79,7 @@ const Settings = () => {
                             border="none"
                         >
                             <SegmentGroup.Indicator />
-                            <SegmentGroup.Items items={["Celcius (°C)", "fahrenheit (°F)"]} p={2} />
+                            <SegmentGroup.Items items={["Celcius (°C)", "Fahrenheit (°F)"]} p={2} />
                         </SegmentGroup.Root>
                     </Flex>
                     <Flex display={"flex"} justify={"space-between"} w={"100%"} align={"center"}>

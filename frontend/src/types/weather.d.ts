@@ -86,3 +86,16 @@ export interface HourlyWeatherProps {
   condition: string;     // Weather condition (e.g., "Clear", "Rainy")
 }
 
+
+export interface LocationProps {
+    city: string|null;
+    country: string|null
+}
+
+
+export interface Favorite 
+{ 
+    id: string;
+    user_id: string;
+    Details: LocationProps
+}

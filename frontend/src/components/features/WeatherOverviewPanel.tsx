@@ -26,7 +26,7 @@ const Home = ({ height, weather, isLoading }: { height: string; weather: Weather
     if ( isLoading || !weather || !weather.location || !weather.current) {
         return <Text>Loading...</Text>;  // Display loading state if weather is not available
     }
-    const locationImageResult = useLocationImage(weather.location.name)
+    const locationImageResult = useLocationImage(weather.location.country)
     const {flag, isFlagLoading} = useCountryFlag(weather.location.country)
     
     if (locationImageResult.imageLoading ) {
@@ -42,7 +42,6 @@ const Home = ({ height, weather, isLoading }: { height: string; weather: Weather
                 gap={0}
                 className="weather-card"
             >
-                
                 <Grid
                     w={{ base: "100%", lg: "25%" }}
                     templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(5, 1fr)", lg: "repeat(2, 1fr)" }}

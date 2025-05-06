@@ -2,8 +2,8 @@ package repository
 
 import (
 	"context"
+
 	"github.com/7RiKuSama/Aerify/internal/models"
-	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -19,13 +19,12 @@ func NewFavoritesnRepo(collection *mongo.Collection) *FavoriteRepo {
 }
 
 func (f *FavoriteRepo) Create(ctx context.Context, userID primitive.ObjectID, location models.Location) (interface{}, error) {
-	
+
 	fav := models.Favorite{
-		UserID: userID,
+		UserID:  userID,
 		Details: location,
-		CreatedAt: time.Now(),
 	}
-	
+
 	result, err := f.collection.InsertOne(ctx, fav)
 
 	if err != nil {
@@ -37,6 +36,19 @@ func (f *FavoriteRepo) Create(ctx context.Context, userID primitive.ObjectID, lo
 
 func (f *FavoriteRepo) Delete(ctx context.Context, favoriteId primitive.ObjectID) error {
 	result, err := f.collection.DeleteOne(ctx, bson.M{"_id": favoriteId})
+	if err != nil {
+		return err
+	}
+
+	if result.DeletedCount == 0 {
+		return mongo.ErrNoDocuments
+	}
+
+	return nil
+}
+
+func (f *FavoriteRepo) DeleteAll(ctx context.Context, userID primitive.ObjectID) error {
+	result, err := f.collection.DeleteMany(ctx, bson.M{"_id": userID})
 	if err != nil {
 		return err
 	}

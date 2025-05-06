@@ -2,13 +2,11 @@ package main
 
 import (
 	"context"
+	"time"
+
 	"github.com/7RiKuSama/Aerify/internal/api"
 	"github.com/7RiKuSama/Aerify/internal/config"
 	"github.com/7RiKuSama/Aerify/internal/db"
-	"net/http"
-	"time"
-
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -39,18 +37,15 @@ func main() {
 	router.Engine.POST("/user", handlers.HandleCreateUser)
 	router.Engine.POST("/login", handlers.HandleVerifyUser)
 
-
-	
 	protected := router.Engine.Group("/api", api.JWTMiddleware())
 
 	{
-		protected.GET("/", func(c *gin.Context) {
-			c.String(http.StatusOK, "hello world")
-		})
-
-		
+		protected.GET("/verify", handlers.HandleGetUserInfo)
+		protected.GET("/favorite", handlers.HandleGetAllFavorites)
+		protected.POST("/favorite/:id", handlers.HandleCreateFavorite)
+		protected.DELETE("/favorite/:id", handlers.HandleDeleteFavorite)
+		protected.DELETE("/favorite", handlers.HandleDeleteAllFavorites)
 	}
-
 
 	router.Engine.Run(":4000")
 }

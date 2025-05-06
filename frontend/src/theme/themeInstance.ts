@@ -17,7 +17,7 @@ export const darkTheme: ThemeProps['theme'] = {
     bg: "rgb(29, 30, 38)",
     color: "white",
     boxColor: "white",
-    boxBg: "rgb(8, 23, 37)",
+    boxBg: "rgb(11, 32, 51)",
     borderColor: "rgba(98, 164, 226, 0.27)",
     secondColor: "rgb(0, 153, 255)",
     isEnabled: true

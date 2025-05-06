@@ -20,3 +20,9 @@ export interface LoginErrorsProps {
     }
 }
 
+
+export interface Errors {
+    status: string;
+    message: string;
+}
+

@@ -22,12 +22,13 @@ const NewsArticle = (article: NewsArticleProps) => {
             bg={theme.boxBg}
             p={2}
         >
-            <Image src={article.image} width={{base: "100%", sm: "70%", lg: "70%"}} h={{base: "60%", sm: "300px", lg: "100%"}} borderRadius={"5px"} mr={2}/>
+            <Image src={article.image} width={{base: "100%", sm: "70%", lg: "50%"}} h={{base: "60%", sm: "300px", lg: "80%"}} borderRadius={"5px"} mr={2}/>
             <Box width={{base: "100%", md: "80%"}} display={"flex"} flexDirection={"column"} h={{base: "60%", md: "10%", lg: "fit-content"}} p={2}>
                 <Heading>
                     <Link 
                         color= {theme.secondColor}
                         href={article.url}
+                        fontSize={"20px"}
                     >
                         {
                             article.title.length > titleLength! 
@@ -36,7 +37,11 @@ const NewsArticle = (article: NewsArticleProps) => {
                         }
                     </Link>
                 </Heading>
-                <Text mb={2}>{article.content}</Text>
+                <Text mb={2}>{
+                    article.content.length > 100! 
+                    ? article.content.slice(0, 100) + "..." 
+                    : article.content
+                }</Text>
                 <HStack fontSize={"10px"} color={"gray"} display={"flex"} alignItems={"end"} justifyContent={"start"} h={"100%"}>
                 <Text>Source: {article.source}</Text>
                 </HStack>

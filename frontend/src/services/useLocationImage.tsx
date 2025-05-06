@@ -13,7 +13,7 @@ interface LocationImageResult {
   error: string | null;
 }
 
-const useLocationImage = (city: string): LocationImageResult => {
+const useLocationImage = (country: string): LocationImageResult => {
   const [result, setResult] = useState<LocationImageResult>({
     image: null,
     imageLoading: false,
@@ -22,15 +22,17 @@ const useLocationImage = (city: string): LocationImageResult => {
 
   useEffect(() => {
     const fetchCityImage = async () => {
-      if (!city || !city.trim()) return; // Skip empty city names
+      if (!country.trim()) return;
 
-      setResult(prev => ({ ...prev, isLoading: true, error: null }));
+      setResult(prev => ({ ...prev, imageLoading: true, error: null }));
 
       try {
-        const url = `https://api.unsplash.com/search/photos?query=${city}&page=1&per_page=1&client_id=hlw9seAPJY857UvxG2ySdps7dICeGUf8Ba-G3zpnV8k`;
+        const query = `${country} cityscape`;
+        const url = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&page=1&per_page=1&orientation=landscape&order_by=curated&client_id=iQBIHDN-auPaeczwibrxkViuVbJsNHblCjtiuN8U5YM`;
+
 
         const response = await fetch(url);
-        
+
         if (!response.ok) {
           throw new Error(`API request failed with status ${response.status}`);
         }
@@ -47,13 +49,13 @@ const useLocationImage = (city: string): LocationImageResult => {
         setResult({
           image: null,
           imageLoading: false,
-          error: error instanceof Error ? error.message : 'Failed to fetch city image',
+          error: error instanceof Error ? error.message : "Failed to fetch city image",
         });
       }
     };
 
     fetchCityImage();
-  }, [city]);
+  }, [location]);
 
   return result;
 };

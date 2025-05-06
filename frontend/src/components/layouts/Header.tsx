@@ -1,29 +1,44 @@
 import { Provider } from '../ui/provider';
 import { 
-    IconButton, 
+    IconButton,
+    Menu, 
     Box, 
     Flex,
     HStack, 
     Link, 
     Avatar,
     Image,
-    VStack
+    VStack,
+    Portal
 } from '@chakra-ui/react'
 import { FaBars } from 'react-icons/fa';
 import { MdDarkMode } from "react-icons/md";
 import { MdOutlineDarkMode } from "react-icons/md";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import "../../styles/App.css"
 import { HeaderProps } from "../../types/header"
 import { lightTheme, darkTheme } from '../../theme/themeInstance';
 import SearchInput from '../common/SearchInput';
 import TypeHead from '../common/TypeHead';
 import MainContext from '../../Contexts/MainContext';
+import { IoMdSettings } from 'react-icons/io';
+import { LuChevronRight } from 'react-icons/lu';
+import { IoLogInOutline } from 'react-icons/io5';
 
 const Header = (props: HeaderProps) => {
 
-    const {searchText} = useContext(MainContext)
-    const [isConnected] = useState(false)
+    const {searchText, userInfo, userInfoLoading, unit, setUnit} = useContext(MainContext)
+    const [isConnected, setIsConnected] = useState(false);
+  
+    useEffect(() => {
+      if (!userInfoLoading && userInfo?.isConnected === true) {
+        setIsConnected(true);
+      } else {
+        setIsConnected(false);
+      }
+    }, [userInfoLoading, userInfo]);    
+    
+    
     return <>
         <Provider>
             <header>
@@ -107,10 +122,58 @@ const Header = (props: HeaderProps) => {
                                 {
                                     isConnected && (
                                         <>
-                                            <Avatar.Root>
-                                                <Avatar.Fallback name="ghalem chaouch" />
-                                                <Avatar.Image src="https://bit.ly/sage-adebayo" />
-                                            </Avatar.Root>
+                                            <Menu.Root>
+                                                <Menu.Trigger>
+                                                    <Avatar.Root colorPalette={"blue"}>
+                                                        <Avatar.Fallback name={userInfo?.username} />
+                                                    </Avatar.Root>
+                                                </Menu.Trigger>
+                                                <Portal>
+                                                    <Menu.Positioner>
+                                                        <Menu.Content p={1}>
+        
+                                                            <Menu.Root positioning={{ placement: "right-start", gutter: 2 }}>
+                                                                <Menu.TriggerItem>
+                                                                    Temperature Unit <LuChevronRight />
+                                                                </Menu.TriggerItem>
+                                                                <Portal>
+                                                                    <Menu.Positioner>
+                                                                        <Menu.Content p={4}>
+                                                                            <Menu.RadioItemGroup
+                                                                                value={unit}
+                                                                                onValueChange={(e) => setUnit(e.value)}
+                                                                            >
+                                                                                <Menu.RadioItem key="temp" value="C">
+                                                                                    Celcius (°C)
+                                                                                    <Menu.ItemIndicator />
+                                                                                </Menu.RadioItem>
+                                                                                <Menu.RadioItem key="temp" value="F">
+                                                                                    Fahrenheit (°F)
+                                                                                    <Menu.ItemIndicator />
+                                                                                </Menu.RadioItem>
+                                                                            </Menu.RadioItemGroup>
+                                                                        </Menu.Content>
+                                                                    </Menu.Positioner>
+                                                                </Portal>
+                                                            </Menu.Root>
+                                                            <Menu.Item value='settings' asChild>
+                                                                <Box>
+                                                                    <IoMdSettings /> 
+                                                                    <a href="/settings">Settings</a>
+                                                                </Box>
+                                                            </Menu.Item>
+                                                            <Menu.Item
+                                                                value="delete"
+                                                                color="fg.error"
+                                                                _hover={{ bg: "bg.error", color: "fg.error" }}
+                                                            >
+                                                            <IoLogInOutline />
+                                                            Log out
+                                                            </Menu.Item>
+                                                        </Menu.Content>
+                                                    </Menu.Positioner>
+                                                </Portal>
+                                            </Menu.Root>
                                         </>
                                     )
                                 }

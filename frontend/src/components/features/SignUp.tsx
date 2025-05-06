@@ -11,7 +11,7 @@ import { SignupUserProps } from "../../types/user"
 
 const SignUp = () => {
 
-    const {theme} = useContext(MainContext)
+    const {theme, refetchUserInfo} = useContext(MainContext)
     const Navigate = useNavigate()
     const [error, setError] = useState<SignupErrorsProps>({
         status: "",
@@ -29,7 +29,6 @@ const SignUp = () => {
         password: "",
         email: "",
     })
-
 
     
     
@@ -62,6 +61,7 @@ const SignUp = () => {
             }
 
             if (res.status === 201) {
+                await refetchUserInfo()
                 Navigate("/dashboard")
             }
 

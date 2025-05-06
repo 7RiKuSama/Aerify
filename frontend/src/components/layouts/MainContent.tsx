@@ -13,6 +13,7 @@ import { WeatherProps } from "../../types/weather"
 import WindyMap from "../features/WindyMap"
 import AirQuality from "../features/AirQuality"
 import MajorCitiesWeather from "../features/MajorCitiesWeather"
+import Favorites from "../features/Favorites"
 
 
 const MainContent = ({ theme }: ThemeProps) => {
@@ -45,6 +46,9 @@ const MainContent = ({ theme }: ThemeProps) => {
                 textAlign: "justify",
             }}>
                 <Flex h={"100%"} w={"100%"} flexDirection={"column"} gap={2}>
+                    
+                    <Favorites weather={weatherToDisplay} isLoading={loadingToUse} />
+                    <Heading>Weather Summary</Heading>
                     <Container>
                         <WeatherOverviewPanel weather={weatherToDisplay} isLoading={loadingToUse} height="850px" />
                     </Container>
@@ -53,9 +57,7 @@ const MainContent = ({ theme }: ThemeProps) => {
                         <ForcastCards weather={weatherToDisplay} isLoading={loadingToUse} />
                     </Container>
                     <Heading>Hourly Weather Graph</Heading>
-                    <Container>
-                        <HourlyWeather weather={weatherToDisplay} />
-                    </Container>
+                    <Container><HourlyWeather weather={weatherToDisplay} /></Container>
                     <Grid
                         templateRows={{ base: "repeat(3, auto)", lg: "630px 1fr" }}
                         templateColumns={{ base: "1fr", lg: "repeat(3, 1fr)" }}
@@ -70,7 +72,7 @@ const MainContent = ({ theme }: ThemeProps) => {
                     {/* News Section */}
                     <GridItem 
                         colSpan={{ base: 1, lg: 1 }} 
-                        rowSpan={{ base: 1, lg: 2 }} // ⭐ Make it stretch two rows on large screens
+                        rowSpan={{ base: 1, lg: 2 }}
                         ml={{ base: 0, lg: 2 }}
                     >
                         <Heading mb={{base: 0, lg: 4}}>News Related to Weather</Heading>

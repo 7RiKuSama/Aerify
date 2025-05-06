@@ -19,6 +19,9 @@ import useAutocompleteLocation from "./services/UseAutocompleLocation"
 import useNews from "./services/useNews"
 import AppRoutes from "./routes/AppRoutes"
 import Footer from "./components/layouts/Footer"
+import useUserInfo from "./services/useUserInfo"
+import useCreateFavorite from "./hooks/useCreateFavorite"
+import useGetAllFavorite from "./hooks/useGetAllFavorites"
 
 
 
@@ -32,8 +35,12 @@ function App() {
   const {weather, isLoading} = fetchWeather()
   const {searchText, setSearchText, suggestions} = useAutocompleteLocation()
   const { news, newsLoading } = useNews()  
+  const {userInfo, userInfoError, userInfoLoading, refetchUserInfo} = useUserInfo()
+  const {error:favoriteError} = useCreateFavorite()
+
+
   return (
-    <MainContext.Provider value={{weather, isLoading, location, theme, searchText, setSearchText, suggestions, unit, setUnit, news, newsLoading}}>
+    <MainContext.Provider value={{weather, isLoading, location, theme, searchText, setSearchText, suggestions, unit, setUnit, news, newsLoading, userInfo, userInfoError, userInfoLoading, refetchUserInfo, favoriteError}}>
       <div style={{ background: theme.bg }}>
         <Provider>
           <BrowserRouter>
