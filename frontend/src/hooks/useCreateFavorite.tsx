@@ -1,9 +1,10 @@
-import { useState } from "react"
-import { Errors } from "../types/error"
+import { useState, useContext } from "react"
 import { LocationProps } from "../types/weather"
+import MainContext from "../Contexts/MainContext"
 
 const useCreateFavorite = () => {
-    const [error, setError] = useState<Errors|null>(null)
+    
+    const {favoriteError, setFavoriteError} = useContext(MainContext)
     const [loading, setLoading] = useState(false)
     
     const createFavorite = async (location: LocationProps) => {
@@ -22,10 +23,12 @@ const useCreateFavorite = () => {
                 })
             })
             if (!res.ok) {
-                setError({
+                setFavoriteError({
                     status: res.statusText,
                     message: "Something happned while adding it to favorites."
                 })
+            } else {
+                setFavoriteError(null)
             }
         } catch (error) {
             throw new Error(error instanceof Error ? error.message : String(error))
@@ -34,7 +37,7 @@ const useCreateFavorite = () => {
         }
     }
 
-    return {createFavorite, loading, error}
+    return {createFavorite, loading, favoriteError}
 }
 
 

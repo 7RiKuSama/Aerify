@@ -1,4 +1,4 @@
-import { Grid, GridItem, Flex, Text, Box, Image } from "@chakra-ui/react"
+import { Grid, GridItem, Flex, Text, Box, Image, Stack, HStack, SkeletonCircle, SkeletonText, Skeleton } from "@chakra-ui/react"
 
 import { useContext } from "react"
 import MainContext from "../../Contexts/MainContext"
@@ -24,13 +24,34 @@ const Home = ({ height, weather, isLoading }: { height: string; weather: Weather
     const { theme, unit } = useContext(MainContext);
     // Add a check to ensure `weather` and `weather.current` exist
     if ( isLoading || !weather || !weather.location || !weather.current) {
-        return <Text>Loading...</Text>;  // Display loading state if weather is not available
+        return (
+            <Box p={10}>
+                <Stack gap="6" maxW="100%">
+                    <HStack width="full">
+                        <SkeletonText noOfLines={15} />
+                    </HStack>
+                <Skeleton 
+                    height="100%"
+                />
+            </Stack>
+          </Box>
+          )
     }
     const locationImageResult = useLocationImage(weather.location.country)
     const {flag, isFlagLoading} = useCountryFlag(weather.location.country)
     
     if (locationImageResult.imageLoading ) {
-        return <Text>Loading...</Text>;
+        return (
+        <Box>
+            <Stack gap="6" maxW="xs">
+                <HStack width="full">
+                    <SkeletonCircle size="10" />
+                    <SkeletonText noOfLines={2} />
+                </HStack>
+            <Skeleton height="200px" />
+        </Stack>
+      </Box>
+      )
     }
     return (
         <>

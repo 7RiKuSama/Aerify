@@ -1,4 +1,4 @@
-import { Box, Text, Flex, Heading, IconButton } from "@chakra-ui/react"
+import { Box, Text, Flex, Heading, IconButton, Stack, HStack, SkeletonText, Skeleton } from "@chakra-ui/react"
 import MainContext from "../../Contexts/MainContext"
 import { useContext } from "react"
 import Favorite from "../common/Favorite"
@@ -10,10 +10,21 @@ import useGetAllFavorite from "../../hooks/useGetAllFavorites"
 const Favorites = ({weather, isLoading}: {weather:WeatherProps, isLoading:boolean}) => {
     const { theme } = useContext(MainContext)
     const { loading, createFavorite} = useCreateFavorite()
-    const { favorites, loading:allFavLoading } = useGetAllFavorite()
+    const { favorites, loading: allFavLoading, getAllFavorites } = useGetAllFavorite()
     
     if ( allFavLoading || loading || isLoading || !weather || !weather.location || !weather.current) {
-            return <Text>Loading...</Text>;  // Display loading state if weather is not available
+            return (
+                        <Box p={10}>
+                            <Stack gap="6" maxW="100%">
+                                <HStack width="full">
+                                    <SkeletonText noOfLines={4} />
+                                </HStack>
+                            <Skeleton 
+                                height="100%"
+                            />
+                        </Stack>
+                      </Box>
+                      )
         }
     
     return (
@@ -29,7 +40,13 @@ const Favorites = ({weather, isLoading}: {weather:WeatherProps, isLoading:boolea
                 overflowX={"auto"}
             >
                 {favorites?.map((favorite, index) => (
-                    <Favorite key={index} city={favorite.Details.city || ""} country={favorite.Details.country || ""} id={favorite.id} />
+                    <Favorite
+                        key={index}
+                        city={favorite.Details.city || ""}
+                        country={favorite.Details.country || ""}
+                        id={favorite.id}
+                        onChange={getAllFavorites} // Pass it here
+                  />
                 ))}
                 <IconButton
                     h={{base: "100px", sm: "200px"}}
@@ -37,7 +54,10 @@ const Favorites = ({weather, isLoading}: {weather:WeatherProps, isLoading:boolea
                     bg={theme.borderColor}
                     borderRadius={"5px"}
                     display={"flex"}
-                    onClick={() => createFavorite({city: weather.location.name, country: weather.location.country})}
+                    onClick={async () => {
+                        await createFavorite({ city: weather.location.name, country: weather.location.country })
+                        await getAllFavorites()
+                    }}
                     justifyContent={"center"}
                     alignItems={"center"}
                     _hover={{

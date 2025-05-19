@@ -18,6 +18,26 @@ func NewFavoritesnRepo(collection *mongo.Collection) *FavoriteRepo {
 	return &FavoriteRepo{collection: collection}
 }
 
+
+func (f *FavoriteRepo) CheckLocationIfExist(ctx context.Context, favorite models.Favorite) (bool, error) {
+	filter := bson.M{
+		"user_id": favorite.UserID,
+		"Details.country": favorite.Details.Country,
+		"Details.city":    favorite.Details.City,
+	}
+	result := f.collection.FindOne(ctx, filter)
+
+	var found bson.M
+	err := result.Decode(&found)
+	if err == mongo.ErrNoDocuments {
+		return false, nil
+	}
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
 func (f *FavoriteRepo) Create(ctx context.Context, userID primitive.ObjectID, location models.Location) (interface{}, error) {
 
 	fav := models.Favorite{

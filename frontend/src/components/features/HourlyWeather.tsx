@@ -10,7 +10,7 @@ const HourlyWeather = ({ weather }: { weather: WeatherProps }) => {
   const { theme } = useContext(MainContext);
   const [selected, setSelected] = useState("temperature");
   const [renderKey, setRenderKey] = useState(0); // Force re-render key
-  const plotData = useHourlyWeather(weather);
+  const plotData = useHourlyWeather(weather, 0);
   
   // Create a ref for timeout
   const renderTimeoutRef = useRef<number | null>(null);
@@ -101,7 +101,7 @@ const HourlyWeather = ({ weather }: { weather: WeatherProps }) => {
           {/* Only render chart when this tab is selected, with key for forcing re-render */}
           {selected === key && (
             <div key={`${key}-${renderKey}`} style={{ width: "100%", height: "100%" }}>
-              <AreaChartLayout dataChart={plotData[key] || []} />
+              <AreaChartLayout dataChart={plotData[key] || []} color={theme.secondColor} />
             </div>
           )}
         </Tabs.Content>

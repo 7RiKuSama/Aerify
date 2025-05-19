@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, HStack, Skeleton, SkeletonCircle, SkeletonText, Stack, Text } from "@chakra-ui/react";
 import MainContext from "../../Contexts/MainContext";
 import { useContext } from "react";
 import { WeatherProps } from "../../types/weather";
@@ -14,7 +14,16 @@ const AirQuality = ({ weather, isLoading }: { weather: WeatherProps; isLoading: 
   const { theme } = useContext(MainContext);
 
   if (isLoading || !weather?.current || !weather?.current?.air_quality) {
-    return <Text>Loading...</Text>;
+    return (
+      <Box p={10}>
+        <Stack gap="6" maxW="100%">
+          <HStack width="full">
+            <SkeletonText noOfLines={16} />
+          </HStack>
+          <Skeleton height="100%" />
+        </Stack>
+      </Box>
+    );
   }
 
   // Mapping each air quality metric to its label, unit, and icon

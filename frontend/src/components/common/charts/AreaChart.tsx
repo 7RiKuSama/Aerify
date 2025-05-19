@@ -9,14 +9,12 @@ import {
 } from "recharts";
 import { AreaChartData } from "../../../types/componants";
 import { Box } from "@chakra-ui/react";
-import MainContext from "../../../Contexts/MainContext";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const AreaChartLayout = ({ dataChart }: { dataChart: AreaChartData[] }) => {
-  const { theme } = useContext(MainContext);
+const AreaChartLayout = ({ dataChart, color }: { dataChart: AreaChartData[], color: string }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  
+  const gradientId = `color-${color.replace(/[^a-zA-Z0-9]/g, "")}`;
   // Update dimensions when the component mounts and on window resize
   useEffect(() => {
     const updateDimensions = () => {
@@ -45,34 +43,33 @@ const AreaChartLayout = ({ dataChart }: { dataChart: AreaChartData[] }) => {
     >
       {dimensions.width > 0 && (
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart
+            <AreaChart
             data={dataChart}
             margin={{
-              top: 10,
+              top: 30,
               bottom: 10,
-              left: 0,
-              right: 0,
+              left: 20,
+              right: 20,
             }}
-          >
+            >
             <defs>
-              <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={theme.secondColor} stopOpacity={1} />
-                <stop offset="95%" stopColor={theme.secondColor} stopOpacity={0} />
+              <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="10%" stopColor={color} stopOpacity={0.7} />
+              <stop offset="95%" stopColor={color} stopOpacity={0} />
               </linearGradient>
             </defs>
-
-            <XAxis dataKey="name" />
+            <XAxis dataKey="name" tick={{ fill: color, fontSize: 12 }} />
             <YAxis hide={true} />
-            <CartesianGrid vertical={false} horizontal={false} />
+            <CartesianGrid vertical={true} horizontal={true} strokeDasharray="3 3" />
             <Tooltip />
             <Area
               type="monotone"
               dataKey="uv"
-              stroke="#4d98fa"
-              fill="url(#colorUv)"
+              stroke={color}
+              fill={`url(#${gradientId})`}
               fillOpacity={1}
             />
-          </AreaChart>
+            </AreaChart>
         </ResponsiveContainer>
       )}
     </Box>

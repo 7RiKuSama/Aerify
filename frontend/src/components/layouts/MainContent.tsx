@@ -45,6 +45,7 @@ const MainContent = ({ theme }: ThemeProps) => {
                 justifyContent: "center",
                 textAlign: "justify",
             }}>
+
                 <Flex h={"100%"} w={"100%"} flexDirection={"column"} gap={2}>
                     
                     <Favorites weather={weatherToDisplay} isLoading={loadingToUse} />
@@ -66,7 +67,7 @@ const MainContent = ({ theme }: ThemeProps) => {
                     {/* Weather Map */}
                     <GridItem colSpan={{ base: 1, lg: 2 }}>
                         <Heading mb={{base: 0, lg: 4}}>Weather Map</Heading>
-                        <WindyMap weather={weatherToDisplay} isLoading={loadingToUse} />
+                        <WindyMap weather={weatherToDisplay} isLoading={loadingToUse} showDetails={true} showCalendar={true} height={500}/>
                     </GridItem>
 
                     {/* News Section */}

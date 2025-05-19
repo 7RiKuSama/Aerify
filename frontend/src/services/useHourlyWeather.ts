@@ -12,12 +12,12 @@ import { useEffect, useState } from "react";
 //   condition: string;     // Weather condition (e.g., "Clear", "Rainy")
 // }
 
-const useHourlyWeather = (apiData: any) => {
+const useHourlyWeather = (apiData: any, day: number) => {
   const [chartData, setChartData] = useState<any>({}); // Changed to store multiple types
 
   useEffect(() => {
     if (apiData && apiData.forecast && apiData.forecast.forecastday) {
-      const forecastDay = apiData.forecast.forecastday[0]; // Get data for the first day
+      const forecastDay = apiData.forecast.forecastday[day]; // Get data for the first day
 
       if (forecastDay.hour) {
         const filteredData = forecastDay.hour.map((hour: any) => ({
@@ -30,6 +30,12 @@ const useHourlyWeather = (apiData: any) => {
           precipitation: hour.precip_mm || 0, // Precipitation
           pressure: hour.pressure_mb || hour.pressure, // Air Pressure
           condition: hour.condition.text, // Weather Condition
+          dewpoint_c: hour.dewpoint_c,
+          dewpoint_f: hour.dewpoint_f,
+          visibility: hour.vis_km,
+          cloud: hour.cloud,
+          feelslike_c: hour.feelslike_c,
+          icon: hour.condition.icon
         }));
 
         // Return all data types as separate arrays
@@ -52,20 +58,48 @@ const useHourlyWeather = (apiData: any) => {
           })),
           uvIndex: filteredData.map((data: any) => ({
             name: data.time.substring(11),
-            uv: data.uvIndex, // UV Index mapped to uv
+            uv: data.uvIndex, 
           })),
           precipitation: filteredData.map((data: any) => ({
             name: data.time.substring(11),
-            uv: data.precipitation, // Precipitation mapped to uv
+            uv: data.precipitation, 
           })),
           pressure: filteredData.map((data: any) => ({
             name: data.time.substring(11),
-            uv: data.pressure, // Pressure mapped to uv
+            uv: data.pressure, 
+          })),
+          condition: filteredData.map((data: any) => ({
+            name: data.time.substring(11),
+            uv: data.condition, 
+          })),
+          icon: filteredData.map((data: any) => ({
+            name: data.time.substring(11),
+            uv: data.icon 
+          })),
+          dewpoint_c: filteredData.map((data: any) => ({
+            name: data.time.substring(11),
+            uv: data.dewpoint_c 
+          })),
+          dewpoint_f: filteredData.map((data: any) => ({
+            name: data.time.substring(11),
+            uv: data.dewpoint_f 
+          })),
+          visibility: filteredData.map((data: any) => ({
+            name: data.time.substring(11),
+            uv: data.visibility 
+          })),
+          cloud: filteredData.map((data: any) => ({
+            name: data.time.substring(11),
+            uv: data.cloud 
+          })),
+          feelslike_c: filteredData.map((data: any) => ({
+            name: data.time.substring(11),
+            uv: data.feelslike_c 
           })),
         });
       }
     }
-  }, [apiData]);
+  }, [apiData, day]);
   return chartData;
 };
 

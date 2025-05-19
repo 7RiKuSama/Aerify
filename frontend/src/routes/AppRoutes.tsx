@@ -7,6 +7,8 @@ import SignUp from "../components/features/SignUp";
 import ContactPage from "../components/features/ContactPage";
 import Settings from "../components/features/Settings";
 import AuthRoute from "../hooks/AuthRoute";
+import HourlyForecast from "../components/layouts/HourlyForecast";
+import Impact from "../components/layouts/Impact";
 
 
 const AppRoutes = () => {
@@ -15,6 +17,9 @@ const AppRoutes = () => {
     return (
         <Routes>
             <Route path="/" element={<MainContent theme={theme} />} />
+            <Route path="/impact" element={<Impact theme={theme} />} />            
+            <Route path="/hourly" element={<HourlyForecast theme={theme} />} />
+            <Route path="/hourly/:location" element={<HourlyForecast theme={theme} />} />
             <Route path="/search/:location" element={<MainContent theme={theme} />} />
             <Route path="/dashboard" element={<MainContent theme={theme} />} />
             <Route path="/signin" element={

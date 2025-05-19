@@ -1,13 +1,26 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import MainContext from "../../Contexts/MainContext";
 import { Flex, Box } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { LuSearch } from "react-icons/lu";
 import { Colors, darkTheme } from "../../theme/themeInstance";
 import { Suggestion } from "../../types/weather";
+import { useLocation } from "react-router-dom";
 
 const TypeHead = () => {
     const { theme, suggestions } = useContext(MainContext)
+    const location = useLocation()
+    const [whereToGo, setWhereToGo] = useState("search")
+
+    
+    useEffect(() => {
+        if (location.pathname.startsWith("/hourly")) {
+            setWhereToGo("hourly");
+        } else {
+            setWhereToGo("search");
+        }
+    }, [location.pathname]);
+    
     return (
         <Flex 
             w={"100%"}
@@ -49,7 +62,7 @@ const TypeHead = () => {
                                     }}
                                 >
                                     <Link 
-                                        to={`/search/${encodeURIComponent(
+                                        to={`/${whereToGo}/${encodeURIComponent(
                                             value.city ?? value.state ?? value.province ?? value.country ?? ""
                                         )}`}
                                         style={{

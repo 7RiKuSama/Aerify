@@ -1,4 +1,4 @@
-import { Flex, HStack } from "@chakra-ui/react"
+import { Box, Flex, HStack, Skeleton, SkeletonText, Stack } from "@chakra-ui/react"
 import WeatherStatCard from "../common/weatherCards/WeatherStatCard";
 import MainContext from "../../Contexts/MainContext";
 import { useContext } from "react";
@@ -9,6 +9,21 @@ const ForcastCard = ({weather, isLoading}: {weather:WeatherProps; isLoading: boo
     const { unit } = useContext(MainContext);
 
     const forecastDays = weather?.forecast?.forecastday;
+
+    if ( isLoading || !weather || !weather.location || !weather.current) {
+            return (
+                <Box p={10}>
+                    <Stack gap="6" maxW="100%">
+                        <HStack width="full">
+                            <SkeletonText noOfLines={8} />
+                        </HStack>
+                    <Skeleton 
+                        height="100%"
+                    />
+                </Stack>
+              </Box>
+              )
+        }
 
     return (
         <>

@@ -4,10 +4,10 @@ import { ColorProps } from "../types/theme"
 export const lightTheme: ThemeProps['theme'] = {
     bg: 'white',
     color: "black",
-    boxColor: "black",
-    boxBg: "rgba(66, 66, 66, 0.1)",
+    boxColor: "white",
+    boxBg: "rgba(22, 36, 51, 0.18)",
     borderColor: "rgba(10, 33, 54, 0.29)",
-    secondColor: "rgb(63, 116, 185)",
+    secondColor: "rgb(59, 114, 177)",
     isEnabled: false
 };
 

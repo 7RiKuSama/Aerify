@@ -336,6 +336,26 @@ func (h *Handlers) HandleCreateFavorite(c *gin.Context) {
 		return
 	}
 
+	fav := models.Favorite{
+		UserID: objectID,
+		Details: models.Location{
+			City: location.City,
+			Country: location.Country,
+		},
+	}
+
+	isFound, err := h.DB.Favorites.CheckLocationIfExist(context.TODO(), fav)
+	
+	if (err != nil || isFound) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "fail",
+			"message": "You already added this location to your favorites.",
+			"code":    http.StatusBadRequest,
+			"target":  "main",
+		})
+		return
+	}
+
 	_, err = h.DB.Favorites.Create(context.TODO(), objectID, location)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
