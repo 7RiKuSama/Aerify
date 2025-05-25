@@ -21,7 +21,7 @@ import { FiSunset } from "react-icons/fi";
 
 const Home = ({ height, weather, isLoading }: { height: string; weather: WeatherProps; isLoading: boolean }) => {
     
-    const { theme, unit, userSettingParam } = useContext(MainContext)
+    const { theme, userSettingParam } = useContext(MainContext)
 
     if (isLoading || !weather || !weather.location || !weather.current || !userSettingParam) {
     return <p>...</p>;
@@ -162,9 +162,9 @@ const Home = ({ height, weather, isLoading }: { height: string; weather: Weather
                     >
                         <Box fontWeight="bold" display={"flex"} flexDirection={"column"} alignItems={"start"} w={"100%"}>
                             <Text fontWeight={"normal"}>{weather.current.condition.text}</Text>
-                            <Text fontSize={{base: "4xl", sm: "70px"}}>{weather.current.temp_c.toString().split(".")[0]}°{unit}</Text>
+                            <Text fontSize={{base: "4xl", sm: "70px"}}>{temp_unit === "Celsius (°C)"? weather.current.temp_c.toString().split(".")[0] : weather.current.temp_f.toString().split(".")[0]}{temp_unit === "Celsius (°C)"? "°C" : "°F"}</Text>
                             <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
-                                <Text>{weather.location.name}</Text>
+                                <Text>{weather.location.region}</Text>
                                 <Text display={{base: "none", md: "block"}} fontWeight={"normal"}>, {weather.location.country}</Text>
                                 <Image
                                     src={!isFlagLoading && flag ? flag : undefined}

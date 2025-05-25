@@ -83,7 +83,7 @@ const Tourism = ({weatherToDisplay}: {weatherToDisplay: WeatherProps}) => {
                 <Flex direction={"column"} mr={5}>
                     <Flex justify={"space-between"} align={"start"}>
                         <Box>
-                            <Heading mb={4} fontWeight={"bolder"} fontSize={"40px"}>Today in Tourism</Heading>
+                            <Heading mb={4} fontWeight={"bolder"} fontSize={"40px"}>Today in Tourism in {weatherToDisplay?.location?.region}</Heading>
                             <Text mb={5} w={"30%"}>Daily weather insights for travelers, hikers, and outdoor enthusiasts, highlighting how temperature, rain, wind, UV index, and cloud cover affect comfort, safety, and activity planning.</Text>
                         </Box>
                         <Flex align={"center"}>

@@ -1,7 +1,9 @@
-import { Box, Image, Text, IconButton, Spinner } from "@chakra-ui/react";
+import { Box, Image, Text, IconButton, Spinner, Link } from "@chakra-ui/react";
 import { MdDeleteForever } from "react-icons/md";
 import useLocationImage from "../../services/useLocationImage";
 import useDeleteFavorite from "../../hooks/useDeleteFavorite";
+import MainContext from "../../Contexts/MainContext";
+import { useContext } from "react";
 
 const Favorite = ({
   city,
@@ -16,6 +18,7 @@ const Favorite = ({
 }) => {
   const locationImageResult = useLocationImage(country);
   const { deleteFavorite, loading } = useDeleteFavorite();
+  const {theme} = useContext(MainContext)
 
   if (locationImageResult.imageLoading) {
     return <Text>Loading...</Text>;
@@ -72,7 +75,7 @@ const Favorite = ({
       >
         <Box fontWeight="bold" display="flex" flexDirection="column" justifyContent="end" w="100%" h="100%">
           <Box display="flex" flexDirection="column" alignItems="start" w="100%" fontSize={{ base: "12px", sm: "20px" }}>
-            <Text>{city}</Text>
+            <Link href={`/search/${city}`} color={"blue.400"}>{city}</Link>
             <Text fontWeight={"normal"} display={{ base: "none", sm: "block" }}>{country}</Text>
           </Box>
         </Box>

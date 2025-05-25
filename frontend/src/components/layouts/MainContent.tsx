@@ -6,10 +6,9 @@ import { ThemeProps } from "../../types/theme"
 import HourlyWeather from "../features/HourlyWeather"
 import NewsSection from "../features/NewsSection"
 import MainContext from "../../Contexts/MainContext"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import useFetchWeatherByLocation from "../../services/useFetchWeatherByLocation"
-import { useParams } from "react-router-dom"
-import { WeatherProps } from "../../types/weather"
+import { useNavigate, useParams } from "react-router-dom"
 import WindyMap from "../features/WindyMap"
 import AirQuality from "../features/AirQuality"
 import MajorCitiesWeather from "../features/MajorCitiesWeather"
@@ -18,24 +17,23 @@ import Favorites from "../features/Favorites"
 
 const MainContent = ({ theme }: ThemeProps) => {
 
-    const { weather, isLoading } = useContext(MainContext);
+    const { weather, isLoading, userSettingParam } = useContext(MainContext);
     const { location } = useParams();
+    const navigate = useNavigate();
 
-    // Fetch the searched weather but only if the location is provided
     const { searchedWeather, searchedLoading } = useFetchWeatherByLocation(location || "");
 
-    let weatherToDisplay: WeatherProps;
-    let loadingToUse: boolean;
+    useEffect(() => {
+        if (!location && userSettingParam?.location?.option === "manual") {
+        const defaultCity = userSettingParam.location.default?.city;
+        if (defaultCity) {
+            navigate(`/search/${defaultCity}`, { replace: true });
+        }
+        }
+    }, [location, userSettingParam, navigate]);
 
-    if (location) {
-        // If there's a location, use the searched weather data and its loading state
-        weatherToDisplay = searchedWeather ? searchedWeather : weather;
-        loadingToUse = searchedLoading;
-    } else {
-        // If there's no location, use the general weather data and its loading state
-        weatherToDisplay = weather;
-        loadingToUse = isLoading;
-    }
+    const weatherToDisplay = location ? (searchedWeather || weather) : weather;
+    const loadingToUse = location ? searchedLoading : isLoading;
 
     return (
         <>
@@ -48,12 +46,12 @@ const MainContent = ({ theme }: ThemeProps) => {
 
                 <Flex h={"100%"} w={"100%"} flexDirection={"column"} gap={2}>
                     
-                    <Favorites weather={weatherToDisplay} isLoading={loadingToUse} />
                     <Heading>Weather Summary</Heading>
                     <Container>
                         <WeatherOverviewPanel weather={weatherToDisplay} isLoading={loadingToUse} height="850px" />
                     </Container>
-                    <Heading>Weekly Weather</Heading>
+                    <Favorites weather={weatherToDisplay} isLoading={loadingToUse} />
+                    <Heading mt={3}>Weekly Weather</Heading>
                     <Container>
                         <ForcastCards weather={weatherToDisplay} isLoading={loadingToUse} />
                     </Container>
@@ -65,7 +63,7 @@ const MainContent = ({ theme }: ThemeProps) => {
                         gap={2}
                     >
                     {/* Weather Map */}
-                    <GridItem colSpan={{ base: 1, lg: 2 }}>
+                    <GridItem colSpan={{ base: 1, lg: 2 }} h={"fit-content"}>
                         <Heading mb={{base: 0, lg: 4}}>Weather Map</Heading>
                         <WindyMap weather={weatherToDisplay} isLoading={loadingToUse} showDetails={true} showCalendar={true} height={500}/>
                     </GridItem>

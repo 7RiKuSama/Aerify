@@ -8,7 +8,7 @@ import { Suggestion } from "../../types/weather";
 import { useLocation } from "react-router-dom";
 
 const TypeHead = () => {
-    const { theme, suggestions } = useContext(MainContext)
+    const { theme, suggestions, setSearchText} = useContext(MainContext)
     const location = useLocation()
     const [whereToGo, setWhereToGo] = useState("search")
 
@@ -71,6 +71,7 @@ const TypeHead = () => {
                                             padding: "10px",
                                             paddingLeft: "10px",
                                         }}
+                                        
                                     >
                                         <LuSearch style={{marginRight: ".5em"}}/>
                                         {value.formatted}

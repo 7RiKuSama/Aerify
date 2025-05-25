@@ -22,16 +22,24 @@ func NewConnectionsRepo(collection *mongo.Collection) *ConnectionRepo {
 // AddOrUpdateConnection increments today's connection count or creates a new document.
 // It also deletes documents older than 30 days.
 func (r *ConnectionRepo) AddOrUpdateConnection(ctx context.Context) error {
-	now := time.Now()
-	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
+	now := time.Now().UTC()
+	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
+	tomorrow := today.Add(24 * time.Hour)
 
-	filter := bson.M{"date": today}
+	filter := bson.M{
+		"date": bson.M{
+			"$gte": today,
+			"$lt":  tomorrow,
+		},
+	}
+
 	update := bson.M{
 		"$inc": bson.M{"count": 1},
 		"$setOnInsert": bson.M{
 			"date": today,
 		},
 	}
+
 	opts := options.Update().SetUpsert(true)
 
 	_, err := r.collection.UpdateOne(ctx, filter, update, opts)
@@ -44,7 +52,6 @@ func (r *ConnectionRepo) AddOrUpdateConnection(ctx context.Context) error {
 	_, err = r.collection.DeleteMany(ctx, bson.M{"date": bson.M{"$lt": cutoff}})
 	return err
 }
-
 
 
 // GetAllConnections retrieves all documents from the connections collection.

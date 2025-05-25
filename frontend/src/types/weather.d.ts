@@ -24,6 +24,7 @@ export interface WeatherProps {
       country: string;
       lat: string;
       lon: string;
+      region: string
   };
   current: {
       condition: {

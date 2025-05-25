@@ -22,6 +22,7 @@ func main() {
 	handlers := api.HandlersInit(myDataBase)
 	router.Engine.POST("/user", handlers.HandleCreateUser)
 	router.Engine.POST("/login", handlers.HandleVerifyUser)
+	router.Engine.POST("/contact", handlers.HandleSendContactEmail)
 
 	protected := router.Engine.Group("/api", api.JWTMiddleware())
 

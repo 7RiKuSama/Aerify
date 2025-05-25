@@ -59,7 +59,7 @@ const Fishing = ({weatherToDisplay}: {weatherToDisplay: WeatherProps}) => {
                 <Flex direction={"column"}>
                     <Flex justify={"space-between"} align={"start"}>
                         <Box>
-                        <Heading mb={4} fontWeight={"bolder"} fontSize={"40px"}>Today in Fishing</Heading>
+                        <Heading mb={4} fontWeight={"bolder"} fontSize={"40px"}>Today in Fishing in {weatherToDisplay?.location?.region}</Heading>
                         <Text mb={5} w={"30%"}>
                             Daily weather insights for anglers, highlighting how temperature, wind, rain, pressure, and sunlight affect fish behavior, depth, and feeding patterns.
                         </Text>

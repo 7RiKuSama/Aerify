@@ -2,14 +2,15 @@ package api
 
 import (
 	"context"
+	"log"
 	"net/http"
 
 	"github.com/7RiKuSama/Aerify/internal/models"
 	"github.com/7RiKuSama/Aerify/internal/utils"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"gopkg.in/gomail.v2"
 )
-
 
 // HandleCreateUser handles user registration, including validation, creation, and setting default settings.
 func (h *Handlers) HandleCreateUser(c *gin.Context) {
@@ -198,7 +199,6 @@ func (h *Handlers) HandleCreateUser(c *gin.Context) {
 		true,        // HttpOnly
 	)
 
-
 	// Respond with success
 	c.JSON(http.StatusCreated, gin.H{
 		"status": "success",
@@ -210,7 +210,6 @@ func (h *Handlers) HandleCreateUser(c *gin.Context) {
 	})
 
 }
-
 
 // HandleVerifyUser handles user login by verifying credentials and issuing a token.
 func (h *Handlers) HandleVerifyUser(c *gin.Context) {
@@ -269,8 +268,12 @@ func (h *Handlers) HandleVerifyUser(c *gin.Context) {
 		return
 	}
 
-	_ = h.DB.Stats.IncrementConnectedCount(context.TODO())
-	_ = h.DB.Connections.AddOrUpdateConnection(context.TODO())
+	err = h.DB.Stats.IncrementConnectedCount(context.TODO())
+	err = h.DB.Connections.AddOrUpdateConnection(context.TODO())
+
+	if err != nil {
+		log.Println(err)
+	}
 
 	// Set authentication cookie
 	c.SetCookie(
@@ -294,7 +297,6 @@ func (h *Handlers) HandleVerifyUser(c *gin.Context) {
 	})
 
 }
-
 
 // HandleGetUserInfo retrieves and returns user information based on userID from context.
 func (h *Handlers) HandleGetUserInfo(c *gin.Context) {
@@ -334,7 +336,6 @@ func (h *Handlers) HandleGetUserInfo(c *gin.Context) {
 		"created_at":  user.CreatedAt,
 	})
 }
-
 
 // HandleDeleteUser deletes a user and all associated data.
 func (h *Handlers) HandleDeleteUser(c *gin.Context) {
@@ -402,7 +403,7 @@ func (h *Handlers) HandleDeleteUser(c *gin.Context) {
 		})
 		return
 	}
-	
+
 	// Respond with success
 	c.JSON(http.StatusOK, gin.H{
 		"status":  "success",
@@ -411,7 +412,6 @@ func (h *Handlers) HandleDeleteUser(c *gin.Context) {
 		"target":  "main",
 	})
 }
-
 
 // HandleUpdateUser updates user information and settings.
 func (h *Handlers) HandleUpdateUser(c *gin.Context) {
@@ -455,7 +455,7 @@ func (h *Handlers) HandleUpdateUser(c *gin.Context) {
 	emailVerified, err2 := utils.VerifyEmail(updatedUser.Email)
 
 	if err := utils.CheckErrors(err1, err2); err != nil {
-		
+
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"status": "error",
 			"details": gin.H{
@@ -606,7 +606,6 @@ func (h *Handlers) HandleUpdateUser(c *gin.Context) {
 	})
 }
 
-
 // HandleUpdatePassword updates the user's password after verifying the current password.
 func (h *Handlers) HandleUpdatePassword(c *gin.Context) {
 	// Extract userID from context
@@ -701,7 +700,6 @@ func (h *Handlers) HandleUpdatePassword(c *gin.Context) {
 	)
 }
 
-
 // HandleLogout logs out the user by clearing the authentication cookie.
 func (h *Handlers) HandleLogout(c *gin.Context) {
 
@@ -713,4 +711,37 @@ func (h *Handlers) HandleLogout(c *gin.Context) {
 		"code":    http.StatusOK,
 		"target":  "main",
 	})
+}
+
+type ContactForm struct {
+	Name    string `json:"name" binding:"required"`
+	Email   string `json:"email" binding:"required,email"`
+	Subject string `json:"subject" binding:"required"`
+	Message string `json:"message" binding:"required"`
+}
+
+func (h *Handlers) HandleSendContactEmail(c *gin.Context) {
+	var form ContactForm
+
+	if err := c.ShouldBindJSON(&form); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": "fail", "error": err.Error()})
+		return
+	}
+
+	// Email details
+	mail := gomail.NewMessage()
+	mail.SetHeader("From", form.Email)
+	mail.SetHeader("To", "ghalem1chaouch@gmail.com") // CHANGE THIS TO YOUR EMAIL
+	mail.SetHeader("Subject", "Contact Form: "+form.Subject)
+	mail.SetBody("text/plain", "Name: "+form.Name+"\nEmail: "+form.Email+"\n\n"+form.Message)
+
+	dialer := gomail.NewDialer("smtp.gmail.com", 587, "ghalem1chaouch@gmail.com", "qcrm jjiu yvwh vqxc") // Update SMTP creds
+
+	if err := dialer.DialAndSend(mail); err != nil {
+		log.Println("Email error:", err) // <-- Add this
+		c.JSON(http.StatusInternalServerError, gin.H{"status": "fail", "message": "Failed to send email"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": "success", "message": "Email sent"})
 }

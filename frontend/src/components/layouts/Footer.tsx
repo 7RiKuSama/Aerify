@@ -22,8 +22,8 @@ const Footer = () => {
             <Box>
                 <div className="nav-container" style={{fontSize: "20px"}}>
                     <Link variant="plain" className="nav-link transitioned" href='/dashboard'>Dashboard</Link>
-                    <Link variant="plain" className="nav-link transitioned">Features</Link>
-                    <Link variant="plain" className="nav-link transitioned">About</Link>
+                    <Link variant="plain" className="nav-link transitioned" href='/hourly'>Hourly</Link>
+                    <Link variant="plain" className="nav-link transitioned" href='/impact'>Impact</Link>
                     <Link variant="plain" className="nav-link transitioned" href='/contact'>Contact</Link>
                 </div>
             </Box>

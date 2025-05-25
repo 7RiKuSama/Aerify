@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import MainContext from "../../Contexts/MainContext";
 import { WeatherProps } from "../../types/weather";
 import useFetchWeatherByLocation from "../../services/useFetchWeatherByLocation";
@@ -9,25 +9,23 @@ import Container from "../common/Container";
 import HourlyForecastAccordion from "../features/HourlyForecastAccordion";
 
 const HourlyForecast = ( { theme }: {theme: ThemeProps}) => {
-    const { weather, isLoading } = useContext(MainContext);
+    const { weather, isLoading, userSettingParam } = useContext(MainContext);
     const { location } = useParams();
+    const navigate = useNavigate();
 
-    // Fetch the searched weather but only if the location is provided
     const { searchedWeather, searchedLoading } = useFetchWeatherByLocation(location || "");
 
-    let weatherToDisplay: WeatherProps;
-    let loadingToUse: boolean;
+    useEffect(() => {
+        if (!location && userSettingParam?.location?.option === "manual") {
+        const defaultCity = userSettingParam.location.default?.city;
+        if (defaultCity) {
+            navigate(`/hourly/${defaultCity}`, { replace: true });
+        }
+        }
+    }, [location, userSettingParam, navigate]);
 
-    if (location) {
-        // If there's a location, use the searched weather data and its loading state
-        weatherToDisplay = searchedWeather ? searchedWeather : weather;
-        loadingToUse = searchedLoading;
-    } else {
-        // If there's no location, use the general weather data and its loading state
-        weatherToDisplay = weather;
-        loadingToUse = isLoading;
-    }
-
+    const weatherToDisplay = location ? (searchedWeather || weather) : weather;
+    const loadingToUse = location ? searchedLoading : isLoading;
 
 
 

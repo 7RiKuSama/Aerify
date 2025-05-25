@@ -19,7 +19,7 @@ const NewsArticle = (article: NewsArticleProps) => {
             display={"flex"} 
             flexDirection={{base: "column", sm: "row"}}
             marginBottom={2}
-            p={2}
+            p={0}
         >
             <Image src={article.image} width={{base: "100%", sm: "70%", lg: "50%"}} h={{base: "60%", sm: "300px", lg: "100%"}} borderRadius={"5px"} mr={2}/>
             <Box width={{base: "100%", md: "80%"}} display={"flex"} flexDirection={"column"} h={{base: "60%", md: "10%", lg: "fit-content"}} p={2}>

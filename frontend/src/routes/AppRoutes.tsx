@@ -20,7 +20,8 @@ const AppRoutes = () => {
         <Routes>
             <Route path="/" element={<MainContent theme={theme} />} />
             <Route path="/admin" element={<Admin />} />
-            <Route path="/impact" element={<Impact />} />            
+            <Route path="/impact" element={<Impact />} /> 
+            <Route path="/impact/:location" element={<Impact />} />            
             <Route path="/hourly" element={<HourlyForecast theme={theme} />} />
             <Route path="/hourly/:location" element={<HourlyForecast theme={theme} />} />
             <Route path="/password" element={<ResetPassword />} />

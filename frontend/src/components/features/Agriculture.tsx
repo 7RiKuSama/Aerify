@@ -57,7 +57,7 @@ const Agriculture = ({weatherToDisplay}: {weatherToDisplay: WeatherProps}) => {
                 <Flex direction={"column"}>
                     <Flex justify={"space-between"} align={"start"}>
                         <Box>
-                            <Heading mb={4} fontWeight={"bolder"} fontSize={"40px"}>Today in Agriculture</Heading>
+                            <Heading mb={4} fontWeight={"bolder"} fontSize={"40px"}>Today in Agriculture in {weatherToDisplay?.location?.region}</Heading>
                             <Text mb={5} w={"30%"}>Daily weather insights for farmers and gardeners, with tips on how temperature, rain, humidity, wind, and sunlight impact crop health and growth.</Text>
                         </Box>
                         <Flex align={"center"}>

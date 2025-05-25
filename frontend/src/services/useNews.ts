@@ -26,7 +26,7 @@ const useNews = () => {
         }
 
         // Otherwise fetch new data
-        const url = `https://gnews.io/api/v4/search?q=weather&lang=en&max=10&token=5064bdc162160790fdb2c01f3fdc9e45`
+        const url = `https://gnews.io/api/v4/search?q=flood%20OR%20earthquake%20OR%20cyclone%20OR%20hurricane%20OR%20tornado%20OR%20landslide%20OR%20wildfire&lang=en&max=50&token=5064bdc162160790fdb2c01f3fdc9e45`
         const response = await fetch(url)
         if (!response.ok) throw new Error("Couldn't fetch the news articles")
 

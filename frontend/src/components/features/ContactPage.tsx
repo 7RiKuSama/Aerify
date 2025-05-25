@@ -1,94 +1,169 @@
-import { Field, Flex, Heading, Input, Textarea, Stack, Button, Text, Box, Select } from "@chakra-ui/react"
-import { createListCollection, Portal } from "@ark-ui/react"
-import { useContext } from "react"
-import MainContext from "../../Contexts/MainContext"
+"use client";
 
+import { useContext, useState } from "react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Input,
+  Stack,
+  Text,
+  Textarea,
+  Portal,
+  Select,
+  createListCollection,
+} from "@chakra-ui/react";
+import MainContext from "../../Contexts/MainContext";
 
-const ContactPage = () => {
-    const subjects = createListCollection({
-        items: [
-            { value: "general-feedback", label: "General Feedback" },
-            { value: "weather-accuracy", label: "Weather Accuracy" },
-            { value: "app-issues", label: "App Issues" },
-        ]
-    })
+const ContactForm = () => {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
 
-    const { theme } = useContext(MainContext)
-    return (
-        <Flex>
-            <Flex h={"100vh"} alignItems={"center"} justifyContent={"center"}>
-                        <Stack p={10} h={"fit-content"} w={{ base: "90%", md: "70%" }}  color={theme.color}>
-                            <Box display={"flex"} alignItems={"center"} flexDirection={"column"}>
-                                <Heading color={theme.secondColor}>Contact Us</Heading>
-                                <Text color={"gray"}>We’d love to hear your feedback or help with any questions about the weather app!</Text>
-                            </Box>
-                            <Flex flexDirection={{base: "column", md: "row"}}>
-                                <Field.Root required mr={2}>
-                                    <Field.Label>Full Name</Field.Label>
-                                    <Input  
-                                        
-                                        p={2}
-                                        placeholder="Example85" 
-                                        _placeholder={{color: theme.borderColor}}
-                                        border={`1px solid ${theme.borderColor}`}
-                                    />
-                                    <Field.ErrorText>here's my error</Field.ErrorText>
-                                </Field.Root>
-                
-                                <Field.Root required>
-                                    <Field.Label>Email Address</Field.Label>
-                                    <Input  
-                                        p={2}
-                                        placeholder="me@example.com" 
-                                        _placeholder={{color: theme.borderColor}} 
-                                        border={`1px solid ${theme.borderColor}`}
-                                    />
-                                    <Field.ErrorText>here's my error</Field.ErrorText>
-                                </Field.Root>
-                            </Flex>
+  const [status, setStatus] = useState<null | "success" | "error">(null);
+  const [selectedSubject, setSelectedSubject] = useState<string[]>([]);
+  const {theme} = useContext(MainContext)
 
-                            <Field.Root required>
-                                <Field.Label>Message</Field.Label>
-                                <Textarea  
-                                    p={2}
-                                    placeholder="Example85" 
-                                    _placeholder={{color: theme.borderColor}}
-                                    border={`1px solid ${theme.borderColor}`}
-                                />
-                                <Field.ErrorText>here's my error</Field.ErrorText>
-                            </Field.Root>
-                            <Flex w={"100%"} flexDirection={"row"} alignItems={"start"} justifyContent={"space-between"}>
-                                <Select.Root collection={subjects} size="sm" width="320px">
-                                    <Select.HiddenSelect />
-                                    <Select.Label color={theme.borderColor}>Select the subject</Select.Label>
-                                    <Select.Control >
-                                        <Select.Trigger border={`1px solid ${theme.borderColor}`}>
-                                            <Select.ValueText placeholder="Select framework" />
-                                        </Select.Trigger>
-                                        <Select.IndicatorGroup bg={theme.boxBg}>
-                                            <Select.Indicator />
-                                        </Select.IndicatorGroup>
-                                    </Select.Control>
-                                    <Portal>
-                                        <Select.Positioner>
-                                            <Select.Content bg={theme.bg} color={theme.color} border={`1px solid ${theme.borderColor}`}>
-                                                {subjects.items.map((subject: { value: string; label: string }) => (
-                                                <Select.Item item={subject} key={subject.value}>
-                                                    {subject.label}
-                                                    <Select.ItemIndicator />
-                                                </Select.Item>
-                                                ))}
-                                            </Select.Content>
-                                        </Select.Positioner>
-                                    </Portal>
-                                </Select.Root>
-                                <Button w={"40%"} bg={theme.secondColor} alignSelf={"end"} ml={2}>Sign up</Button>
-                            </Flex>
-                        </Stack>
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-                    </Flex>
-        </Flex>
-    )
-}
+  const handleSubjectChange = (value: string[]) => {
+    setSelectedSubject(value);
+    const subjectLabel = subject.items.find((item) => item.value === value[0])?.label || "";
+    setForm({ ...form, subject: subjectLabel });
+  };
 
-export default ContactPage
+  const sendReport = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("http://localhost:4000/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) throw new Error("Failed");
+
+      setStatus("success");
+      setForm({ name: "", email: "", subject: "", message: "" });
+      setSelectedSubject([]);
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  const subject = createListCollection({
+    items: [
+      { label: "General Feedback", value: "feedback" },
+      { label: "App Issues", value: "issue" },
+      { label: "Weather Accuracy", value: "accuracy" },
+    ],
+  });
+
+  return (
+    <Flex h="100vh" justify="center" align="center" px={4}>
+      <Box
+        as="form"
+        onSubmit={sendReport}
+        bg={theme.boxBg}
+        p={8}
+        rounded="md"
+        w="800px"
+        boxShadow="md"
+        color={theme.color}
+      >
+        {status === "success" && (
+            <Text color="green.500" textAlign={"center"} mb={3} p={2} bg={"green.900"} borderRadius={10}>Message sent successfully!</Text>
+          )}
+          {status === "error" && (
+            <Text color="red.500" textAlign={"center"} mb={3} p={2} bg={"green.900"} borderRadius={10}>Failed to send message. Please try again.</Text>
+        )}
+        <Heading size="lg" mb={4} textAlign="center">
+          Contact Us
+        </Heading>
+
+        <Stack>
+          <Input
+            name="name"
+            placeholder="Your Name"
+            value={form.name}
+            onChange={handleChange}
+            required
+            border={`1px solid ${theme.borderColor}`}
+            bg={theme.boxBg}
+            pl={2}
+          />
+          <Input
+            name="email"
+            type="email"
+            placeholder="Your Email"
+            value={form.email}
+            onChange={handleChange}
+            border={`1px solid ${theme.borderColor}`}
+            bg={theme.boxBg}
+            pl={2}
+            required
+          />
+
+          <Select.Root
+            collection={subject}
+            width="100%"
+            value={selectedSubject}
+            onValueChange={(e) => handleSubjectChange(e.value)}
+          >
+            <Select.HiddenSelect />
+            <Select.Control>
+              <Select.Trigger
+                border={`1px solid ${theme.borderColor}`}
+                bg={theme.boxBg}
+                pl={2}
+              >
+                <Select.ValueText placeholder="Select Subject" />
+              </Select.Trigger>
+              <Select.IndicatorGroup>
+                <Select.Indicator />
+              </Select.IndicatorGroup>
+            </Select.Control>
+            <Portal>
+              <Select.Positioner>
+                <Select.Content>
+                  {subject.items.map((item) => (
+                    <Select.Item item={item} key={item.value}>
+                      {item.label}
+                      <Select.ItemIndicator />
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select.Positioner>
+            </Portal>
+          </Select.Root>
+
+          <Textarea
+            name="message"
+            placeholder="Your Message"
+            value={form.message}
+            onChange={handleChange}
+            border={`1px solid ${theme.borderColor}`}
+            bg={theme.boxBg}
+            p={2}
+            h={"200px"}
+            required
+          />
+
+          <Button type="submit" bg={theme.secondColor}>
+            Send Message
+          </Button>
+        </Stack>
+      </Box>
+    </Flex>
+  );
+};
+
+export default ContactForm;

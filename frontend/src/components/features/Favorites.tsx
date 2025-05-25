@@ -57,7 +57,7 @@ const Favorites = ({weather, isLoading}: {weather:WeatherProps, isLoading:boolea
                             borderRadius={"5px"}
                             display={"flex"}
                             onClick={async () => {
-                                await createFavorite({ city: weather.location.name, country: weather.location.country })
+                                await createFavorite({ city: weather.location.region, country: weather.location.country })
                                 await getAllFavorites()
                             }}
                             justifyContent={"center"}
