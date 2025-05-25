@@ -2,43 +2,55 @@ import { Provider } from "./components/ui/provider"
 import { 
   Grid, 
   GridItem,
-  Flex
+  Flex,
+  Heading
 } from "@chakra-ui/react"
 
 
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { BrowserRouter } from "react-router-dom"
 import Header from "./components/layouts/Header"
 import "./styles/App.css"
 import Drawer from "./components/common/Drawer"
 import fetchWeather from "./services/GetCurrentWeater"
 import MainContext from "./Contexts/MainContext"
-import { lightTheme } from "./theme/themeInstance"
+import { darkTheme, lightTheme } from "./theme/themeInstance"
 import useAutocompleteLocation from "./services/UseAutocompleLocation"
 import useNews from "./services/useNews"
 import AppRoutes from "./routes/AppRoutes"
 import Footer from "./components/layouts/Footer"
 import useUserInfo from "./services/useUserInfo"
 import { Errors } from "./types/error"
-
-
-
+import useGetUserSettings from "./hooks/useGetUserSettings"
 
 
 function App() {
  
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const [theme, setTheme] = useState(lightTheme)
+  const [isConnected, setIsConnected] = useState(false);
   const [unit, setUnit] = useState("C")
   const {weather, isLoading} = fetchWeather()
   const {searchText, setSearchText, suggestions} = useAutocompleteLocation()
   const { news, newsLoading } = useNews()  
-  const {userInfo, userInfoError, userInfoLoading, refetchUserInfo} = useUserInfo()
+  const {userInfo, setUserInfo, userInfoError, userInfoLoading, refetchUserInfo} = useUserInfo()
   const [favoriteError, setFavoriteError] = useState<Errors|null>(null)
+  const { userSettingParam, setSettingParam, refreshUserSettings:fetchUserSettings} = useGetUserSettings()
+  const theme_unit = userSettingParam?.settings?.data[4]?.value
+  const trimmedTheme = (theme_unit || "").trim().toLowerCase()
+  const [theme, setTheme] = useState(lightTheme)
 
+  useEffect(() => {
+    if (trimmedTheme === "dark") {
+      setTheme(darkTheme)
+    } else {
+      setTheme(lightTheme)
+    }
+  }, [trimmedTheme])
+  
   return (
-    <MainContext.Provider value={{weather, isLoading, location, theme, searchText, setSearchText, suggestions, unit, setUnit, news, newsLoading, userInfo, userInfoError, userInfoLoading, refetchUserInfo, favoriteError, setFavoriteError}}>
+    
+    <MainContext.Provider value={{weather, isConnected, setIsConnected, isLoading, location, theme, searchText, setSearchText, suggestions, unit, setUnit, news, newsLoading, userInfo, setUserInfo, userInfoError, userInfoLoading, refetchUserInfo, favoriteError, setFavoriteError, userSettingParam, setSettingParam, fetchUserSettings}}>
       <div style={{ background: theme.bg }}>
         <Provider>
           <BrowserRouter>

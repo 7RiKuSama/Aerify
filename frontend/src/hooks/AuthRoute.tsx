@@ -15,7 +15,7 @@ function AuthRoute({ requireAuth, children }: { requireAuth: boolean; children: 
     
     // If page requires auth and user isn't logged in, redirect to login
     if (requireAuth && !userInfo) {
-      navigate('/login');
+      navigate('/signup');
       return null;
     }
     

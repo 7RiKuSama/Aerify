@@ -1,3 +1,5 @@
+import { weatherSettings } from "./weather";
+
 export interface UserSettingsProps {
     username: {
         state: boolean;
@@ -6,12 +8,15 @@ export interface UserSettingsProps {
     email: {
         state: boolean;
         value: string;
+    },
+    location: {
+        state: boolean, 
+        option: "gps"|"manual", 
+        default: undefined|LocationProps
     }
-    password: {
+    settings: {
         state: boolean;
-    }
-    notification: {
-        state: boolean;
+        data: weatherSettings[]
     }
 }
 

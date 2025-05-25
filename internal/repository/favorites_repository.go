@@ -68,14 +68,11 @@ func (f *FavoriteRepo) Delete(ctx context.Context, favoriteId primitive.ObjectID
 }
 
 func (f *FavoriteRepo) DeleteAll(ctx context.Context, userID primitive.ObjectID) error {
-	result, err := f.collection.DeleteMany(ctx, bson.M{"_id": userID})
+	_, err := f.collection.DeleteMany(ctx, bson.M{"user_id": userID})
 	if err != nil {
 		return err
 	}
 
-	if result.DeletedCount == 0 {
-		return mongo.ErrNoDocuments
-	}
 
 	return nil
 }

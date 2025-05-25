@@ -6,11 +6,11 @@ import { WeatherProps } from "../../types/weather";
 
 
 const ForcastCard = ({weather, isLoading}: {weather:WeatherProps; isLoading: boolean}) => {
-    const { unit } = useContext(MainContext);
+    const { userSettingParam } = useContext(MainContext);
 
     const forecastDays = weather?.forecast?.forecastday;
 
-    if ( isLoading || !weather || !weather.location || !weather.current) {
+    if ( isLoading || !weather || !weather.location || !weather.current || !userSettingParam) {
             return (
                 <Box p={10}>
                     <Stack gap="6" maxW="100%">
@@ -24,6 +24,7 @@ const ForcastCard = ({weather, isLoading}: {weather:WeatherProps; isLoading: boo
               </Box>
               )
         }
+        const temp_unit = userSettingParam?.settings?.data[0]?.value
 
     return (
         <>
@@ -39,20 +40,20 @@ const ForcastCard = ({weather, isLoading}: {weather:WeatherProps; isLoading: boo
                             key={day.date}
                             value={{
                                 icon: day.day.condition.icon,
-                                avgTemp: unit === "C"
+                                avgTemp: temp_unit === "Celsius (°C)"
                                     ? day.day.avgtemp_c.toString().split(".")[0]
                                     : day.day.avgtemp_f.toString().split(".")[0],
-                                minTemp: unit === "C"
+                                minTemp: temp_unit === "Celsius (°C)"
                                     ? day.day.mintemp_c.toString().split(".")[0]
                                     : day.day.mintemp_f.toString().split(".")[0],
-                                maxTemp: unit === "C"
+                                maxTemp: temp_unit === "Celsius (°C)"
                                     ? day.day.maxtemp_c.toString().split(".")[0]
                                     : day.day.maxtemp_f.toString().split(".")[0],
                                 
                                 condition: day.day.condition.text,
                             }}
                             label={`${day.date.substring(5).slice(3, 5)}/${day.date.substring(5).slice(0, 2)}`}
-                            unit={`°${unit}`}
+                            unit={`°${temp_unit === "Celsius (°C)"? "C" : "F"}`}
                             forecast={true}
                         >
                             <></>

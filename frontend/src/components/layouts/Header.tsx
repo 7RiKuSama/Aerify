@@ -1,6 +1,7 @@
 import { Provider } from '../ui/provider';
 import { 
     IconButton,
+    Text,
     Menu, 
     Box, 
     Flex,
@@ -9,12 +10,13 @@ import {
     Avatar,
     Image,
     VStack,
-    Portal
+    Portal,
+    Heading,
 } from '@chakra-ui/react'
 import { FaBars } from 'react-icons/fa';
 import { MdDarkMode } from "react-icons/md";
 import { MdOutlineDarkMode } from "react-icons/md";
-import { useState, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import "../../styles/App.css"
 import { HeaderProps } from "../../types/header"
 import { lightTheme, darkTheme } from '../../theme/themeInstance';
@@ -22,14 +24,14 @@ import SearchInput from '../common/SearchInput';
 import TypeHead from '../common/TypeHead';
 import MainContext from '../../Contexts/MainContext';
 import { IoMdSettings } from 'react-icons/io';
-import { LuChevronRight } from 'react-icons/lu';
+
 import { IoLogInOutline } from 'react-icons/io5';
+import useLogout from '../../hooks/useLogout';
 
 const Header = (props: HeaderProps) => {
 
-    const {searchText, userInfo, userInfoLoading, unit, setUnit} = useContext(MainContext)
-    const [isConnected, setIsConnected] = useState(false);
-  
+    const {searchText, theme, userInfo, userInfoLoading, isConnected, setIsConnected} = useContext(MainContext)
+    const {logout} = useLogout() 
     useEffect(() => {
       if (!userInfoLoading && userInfo?.isConnected === true) {
         setIsConnected(true);
@@ -37,7 +39,6 @@ const Header = (props: HeaderProps) => {
         setIsConnected(false);
       }
     }, [userInfoLoading, userInfo]);    
-    
     
     return <>
         <Provider>
@@ -130,39 +131,28 @@ const Header = (props: HeaderProps) => {
                                                 </Menu.Trigger>
                                                 <Portal>
                                                     <Menu.Positioner>
-                                                        <Menu.Content p={1}>
-        
-                                                            <Menu.Root positioning={{ placement: "right-start", gutter: 2 }}>
-                                                                <Menu.TriggerItem>
-                                                                    Temperature Unit <LuChevronRight />
-                                                                </Menu.TriggerItem>
-                                                                <Portal>
-                                                                    <Menu.Positioner>
-                                                                        <Menu.Content p={4}>
-                                                                            <Menu.RadioItemGroup
-                                                                                value={unit}
-                                                                                onValueChange={(e) => setUnit(e.value)}
-                                                                            >
-                                                                                <Menu.RadioItem key="temp" value="C">
-                                                                                    Celcius (°C)
-                                                                                    <Menu.ItemIndicator />
-                                                                                </Menu.RadioItem>
-                                                                                <Menu.RadioItem key="temp" value="F">
-                                                                                    Fahrenheit (°F)
-                                                                                    <Menu.ItemIndicator />
-                                                                                </Menu.RadioItem>
-                                                                            </Menu.RadioItemGroup>
-                                                                        </Menu.Content>
-                                                                    </Menu.Positioner>
-                                                                </Portal>
-                                                            </Menu.Root>
-                                                            <Menu.Item value='settings' asChild>
+                                                        <Menu.Content p={5} bg={theme.bg}>
+                                                            <Menu.Item value='profile' asChild mb={5}>
+                                                                <Box>
+                                                                    <Avatar.Root colorPalette={"blue"}>
+                                                                        <Avatar.Fallback name={userInfo?.username} />
+                                                                    </Avatar.Root>
+                                                                    <Box>
+                                                                        <Heading color={theme.secondColor}>{userInfo?.username}</Heading>
+                                                                    </Box>
+                                                                </Box>
+                                                            </Menu.Item>
+                                                            <Menu.Item value='settings' asChild color={theme.color}>
                                                                 <Box>
                                                                     <IoMdSettings /> 
                                                                     <a href="/settings">Settings</a>
                                                                 </Box>
                                                             </Menu.Item>
                                                             <Menu.Item
+                                                                onClick={() => {
+                                                                    logout()
+                                                                    setIsConnected(false)
+                                                                }}
                                                                 value="delete"
                                                                 color="fg.error"
                                                                 _hover={{ bg: "bg.error", color: "fg.error" }}

@@ -1,35 +1,71 @@
 import {
+  Box,
+  Button,
   Flex,
+  HStack,
   Input,
   Link,
+  RadioGroup,
   Tabs,
   Text,
-  useBreakpointValue
 } from "@chakra-ui/react";
-import { Switch,  } from "@chakra-ui/react";
-import { FaUserAlt } from "react-icons/fa";
+import { SegmentGroup } from "@chakra-ui/react";
+import { FaRegTrashAlt, FaUserAlt } from "react-icons/fa";
 import { SiAccuweather } from "react-icons/si";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import MainContext from "../../Contexts/MainContext";
-import { PasswordInput } from "../ui/password-input";
-import { SegmentGroup } from "@ark-ui/react";
 import { UserSettingsProps } from "../../types/user";
+import { darkTheme } from "../../theme/themeInstance";
+import PasswordDialog from "../common/PasswordDialog";
+import useDeleteAllFavorites from "../../hooks/useDeleteAllFavorites";
+import { useDeleteUser } from "../../hooks/useDeleteUser";
 
 const Settings = () => {
-  const { theme } = useContext(MainContext);
+  const { theme, userInfo, userInfoLoading, userSettingParam, setSettingParam, fetchUserSettings } = useContext(MainContext);
+  const [location, setLocation] = useState(userSettingParam?.location?.default?.city + "," + userSettingParam?.location?.default?.country)
+  const {deleteFavorites} = useDeleteAllFavorites()
+  const { deleteUser, error } = useDeleteUser()
+  const weatherItems = [
+    {label: "Temperature Units", items: ["Celsius (°C)", "Fahrenheit (°F)"], value: userSettingParam?.settings?.data[0]?.value },
+    { label: "Wind Speed Units", items: ["kph", "mph"], value: userSettingParam?.settings?.data[1]?.value },
+    { label: "Pressure Units", items: ["mb", "inch"], value: userSettingParam?.settings?.data[2]?.value },
+    { label: "Precipitation Units", items: ["mm", "inch"], value: userSettingParam?.settings?.data[3]?.value },
+    { label: "Theme", items: ["Light", "Dark"], value: userSettingParam?.settings?.data[4]?.value }
+  ]
 
-  const [userSettingParam, setSettingParam] = useState<UserSettingsProps>({
-    email: { state: false, value: "example@gmail.com" },
-    password: { state: false },
-    notification: { state: false },
-    username: { state: false, value: "Example" },
-  });
+  const locationOpt = [
+    {label: "GPS", value: "gps"},
+    {label: "Manual", value: "manual"}
+  ]
+
+  let selectedIndex = locationOpt.findIndex(
+    (opt) => opt.value === userSettingParam?.location?.option
+  )
+
+  selectedIndex = selectedIndex + 1
+
+  useEffect(() => {
+    if (!userInfoLoading && userInfo) {
+      setSettingParam((prev:UserSettingsProps) => ({
+        ...prev,
+        email: { ...prev.email, value: userInfo.email },
+        username: { ...prev.username, value: userInfo.username }
+      }));
+    }
+  }, [userInfoLoading, userInfo]);
+
+  //const [settingsError, setSettingsError] = useState([])
+
+  
 
   const handleToggle = (key: keyof UserSettingsProps) => {
-    setSettingParam({
-      ...userSettingParam,
-      [key]: { ...userSettingParam[key], state: true },
-    });
+    setSettingParam((prev:UserSettingsProps) => ({
+      ...prev,
+      [key]: {
+        ...prev[key],
+        state: !prev[key].state,
+      },
+    }));
   };
 
   const renderEditableField = (
@@ -41,18 +77,28 @@ const Settings = () => {
       <Text fontSize="sm">{label}</Text>
       {!userSettingParam[key].state ? (
         <Link
-          color={theme.secondColor}
+          color={darkTheme.secondColor}
           onClick={() => handleToggle(key)}
         >
           {value}
         </Link>
       ) : (
         <Input
-          defaultValue={value}
+          value={userSettingParam[key].value}
+          onChange={(e) =>
+            setSettingParam({
+              ...userSettingParam,
+              [key]: {
+                ...userSettingParam[key],
+                value: e.target.value,
+              },
+            })
+          }
           p={1}
+          pl={4}
           w="50%"
-          bg={theme.boxBg}
-          border={`1px solid ${theme.borderColor}`}
+          bg={darkTheme.boxBg}
+          border={`1px solid ${darkTheme.borderColor}`}
         />
       )}
     </Flex>
@@ -63,38 +109,96 @@ const Settings = () => {
       p={5}
       gap={5}
       flexDirection="column"
-      color={theme.color}
+      color={darkTheme.color}
       h="100%"
       w="100%"
       borderRadius="md"
     >
-      {renderEditableField("Username:", "username", userSettingParam.username.value)}
-      {renderEditableField("Email:", "email", userSettingParam.email.value)}
+      {renderEditableField("Username:", "username", userInfo?.username)}
+      {renderEditableField("Email:", "email", userInfo?.email)}
 
       <Flex justify="space-between" align="center" w="100%">
         <Text fontSize="sm">Password:</Text>
-        {!userSettingParam.password.state ? (
-          <Link
-            color={theme.secondColor}
-            onClick={() => handleToggle("password")}
-          >
-            Change Password
-          </Link>
-        ) : (
-          <PasswordInput
-            bg={theme.boxBg}
-            p={1}
-            border={`1px solid ${theme.borderColor}`}
-          />
-        )}
+        <Link
+          color={darkTheme.secondColor}
+          href="/password"
+        >
+          Change Password
+        </Link>
       </Flex>
-
       <Flex justify="space-between" align="center" w="100%">
-        <Text fontSize="sm">Activate Notifications:</Text>
-        <Switch.Root>
-            <Switch.HiddenInput />
-            <Switch.Control />
-        </Switch.Root>
+        <Text fontSize="sm">Location Source:</Text>
+        <RadioGroup.Root
+          value={userSettingParam?.location?.option || "gps"}
+          onValueChange={({ value }: { value: string }) => {
+            setSettingParam((prev: UserSettingsProps) => ({
+              ...prev,
+              location: {
+                ...prev.location,
+                state: true,
+                option: value,
+              },
+            }));
+          }}
+        >
+          <HStack gap="6">
+            {locationOpt.map((item) => (
+              <RadioGroup.Item key={item.value} value={item.value}>
+                <RadioGroup.ItemHiddenInput />
+                <RadioGroup.ItemIndicator />
+                <RadioGroup.ItemText>{item.label}</RadioGroup.ItemText>
+              </RadioGroup.Item>
+            ))}
+            {userSettingParam?.location?.option === "manual"? 
+              <Input 
+                p={2} 
+                placeholder="(city, country)" 
+                border={`1px solid ${darkTheme.borderColor}`}
+                value={location}
+                onChange={(e) => {
+                  const newLocation = e.target.value;
+                  setLocation(newLocation);
+            
+                  const [city, country] = newLocation.split(",").map(s => s.trim());
+                  
+                  setSettingParam((prev: UserSettingsProps) => ({
+                    ...prev,
+                    location: {
+                      ...prev.location,
+                      default: {
+                        ...prev.location.default,
+                        city,
+                        country,
+                      },
+                    },
+                  }));
+                }}
+              /> : 
+            <></>}
+          </HStack>
+        </RadioGroup.Root>
+      </Flex>
+      <Flex justify="space-between" align="center" w="100%">
+        <Text fontSize="sm">Delete Favorites:</Text>
+        <Button
+          colorPalette={"red"}
+          fontSize={"13px"}
+          padding={1}
+          onClick={deleteFavorites}
+        >
+          <FaRegTrashAlt size={"5px"}/>
+        </Button>
+      </Flex>
+      <Flex justify="space-between" align="center" w="100%">
+        <Text fontSize="sm">Delete Account:</Text>
+        <Button
+          colorPalette={"red"}
+          fontSize={"13px"}
+          padding={1}
+          onClick={deleteUser}
+        >
+          <FaRegTrashAlt size={"5px"}/>
+        </Button>
       </Flex>
     </Flex>
   );
@@ -104,43 +208,33 @@ const Settings = () => {
       p={5}
       gap={5}
       flexDirection="column"
-      color={theme.color}
+      color={darkTheme.color}
       h="100%"
       w="100%"
       borderRadius="md"
     >
-      {[
-        {
-          label: "Temperature Units",
-          items: ["Celsius (°C)", "Fahrenheit (°F)"],
-          defaultValue: "Celsius (°C)",
-        },
-        {
-          label: "Wind Speed Units",
-          items: ["km/h", "mph", "m/s"],
-          defaultValue: "km/h",
-        },
-        {
-          label: "Pressure Units",
-          items: ["hPa", "mmHg", "inHg"],
-          defaultValue: "hPa",
-        },
-        {
-          label: "Theme",
-          items: ["☀️ Light", "🌕 Dark"],
-          defaultValue: "☀️ Light",
-        },
-      ].map(({ label, items, defaultValue }) => (
+      {weatherItems.map(({ label, value, items }, index) => (
         <Flex key={label} justify="space-between" align="center" w="100%">
           <Text fontSize="sm">{label}:</Text>
-          <SegmentGroup.Root defaultValue={defaultValue}>
+          <SegmentGroup.Root 
+            value={value}
+            onValueChange={(details) => {
+              const newValue = details.value;
+              const newWeatherSettings = [...userSettingParam?.settings?.data];
+              newWeatherSettings[index].value = newValue;
+              setSettingParam({
+                ...userSettingParam,
+                settings: {
+                  state: true,
+                  data: newWeatherSettings
+                }
+              });
+            }} 
+          >
             <SegmentGroup.Indicator />
-            {items.map((item) => (
-              <SegmentGroup.Item key={item} value={item}>
-                {item}
-              </SegmentGroup.Item>
-            ))}
+              <SegmentGroup.Items items={items} p={2} colorPalette={"blue"} />
           </SegmentGroup.Root>
+
         </Flex>
       ))}
     </Flex>
@@ -161,44 +255,49 @@ const Settings = () => {
     },
   ];
 
-  const orientation = useBreakpointValue<"horizontal" | "vertical">({
-    base: "horizontal",
-    lg: "vertical",
-  });
 
   return (
-    <Flex w="100%" h="100vh" justify="center" align="center" p={4}>
+    <Flex w="100%" h="100vh" justify="center" align="center" p={4} direction={"column"}>
+    {error === "" ? <></> : <Text>{error}</Text>}
     <Tabs.Root
       defaultValue={settingsCategories[0].value}
-      orientation={orientation}
+      display={"flex"}
+      flexDirection={"column"}
+      orientation={"horizontal"}
       w="90%"
-      h="60%"
+      h="700px"
     >
-      <Tabs.List p={2}>
+      <Tabs.List border={"transparent"}>
         {settingsCategories.map(({ label, value, icon }) => (
-          <Tabs.Trigger key={value} value={value} color={theme.color}>
+          <Tabs.Trigger key={value} value={value} color={"white"} p={2} bg={theme.secondColor} m={1} borderTopLeftRadius={10} borderTopRightRadius={10} borderBottomLeftRadius={0} borderBottomRightRadius={0} _selected={{background: "green", transition: "ease-in-out .2s", border: "transparent"}}>
             <Flex align="center" gap={2}>
               {icon}
               {label}
             </Flex>
           </Tabs.Trigger>
         ))}
+
       </Tabs.List>
       {settingsCategories.map(({ value, content }) => (
         <Tabs.Content
           key={value}
           value={value}
-          bg={theme.boxBg}
+          bg={darkTheme.boxBg}
           p={4}
           borderRadius="md"
+          
+          h={"90%"}
         >
           {content}
         </Tabs.Content>
       ))}
+      <Box w={"100%"} display={"flex"} gap={2} justifyContent={"space-between"} mt={2}>
+        <Button w={"49.5%"} onClick={fetchUserSettings} paddingInline={5} bg={"red.600"}>Cancel</Button>
+        <PasswordDialog userSetting={userSettingParam} setSetting={setSettingParam} />
+      </Box>
     </Tabs.Root>
     </Flex>
-  );
-};
-
+  )
+}
 export default Settings;
   

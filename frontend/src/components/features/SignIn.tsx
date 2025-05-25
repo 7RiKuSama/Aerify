@@ -100,7 +100,7 @@ const SignIn = () => {
                     />
                 </Field.Root>
                 <Box>Don't have an account? <Link href="/signup" color={theme.secondColor}>Sign up</Link></Box>
-                <Button type={"submit"} bg={theme.secondColor}>Sign up</Button>
+                <Button type={"submit"} bg={theme.secondColor}>Sign in</Button>
             </Stack>
         </Flex>
     )

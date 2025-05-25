@@ -14,7 +14,7 @@ import MajorCitiesWeather from "./MajorCitiesWeather";
 
 const HourlyForecastAccordion = ({ weather, loadingToUse }: { weather: WeatherProps, loadingToUse: boolean }) => {
 
-    const {theme} = useContext(MainContext)
+    const {theme, userSettingParam} = useContext(MainContext)
 
     if ( loadingToUse || !weather || !weather.location || !weather.current) {
             return <Text>Loading...</Text>;  // Display loading state if weather is not available
@@ -23,6 +23,11 @@ const HourlyForecastAccordion = ({ weather, loadingToUse }: { weather: WeatherPr
     const [day, setDay] = useState(0)
     const plotData = useHourlyWeather(weather, day);
     const forecastDays = weather?.forecast?.forecastday;
+    const temp_unit = userSettingParam?.settings?.data[0]?.value
+    const wind_unit = userSettingParam?.settings?.data[1]?.value
+    const pressure_unit = userSettingParam?.settings?.data[2]?.value
+    const precipitation_unit = userSettingParam?.settings?.data[3]?.value
+    
     
     
     return (
@@ -71,7 +76,7 @@ const HourlyForecastAccordion = ({ weather, loadingToUse }: { weather: WeatherPr
                         </Flex>
                         <Accordion.Root multiple defaultValue={["b"]}>
                         {plotData?.temperature?.length === 24 && hours.map((item, index) => (
-                            <Accordion.Item key={index} value={item}>
+                            <Accordion.Item key={`${item}-${index}`} value={item}>
                             <Accordion.ItemTrigger
                                 p={5}
                             >
@@ -83,18 +88,18 @@ const HourlyForecastAccordion = ({ weather, loadingToUse }: { weather: WeatherPr
                                         <Image src={plotData?.icon[index]?.uv} />
                                         <Text fontSize={{base: "10px", sm: "sm", md: "lg"}}>{plotData?.condition[index]?.uv}</Text>
                                     </Flex>
-                                    <Text fontSize={{base: "10px", sm: "sm", md: "lg"}}>{plotData?.temperature[index]?.uv.toString().split(".")[0]}°C</Text>
+                                    <Text fontSize={{base: "10px", sm: "sm", md: "lg"}}>{plotData?.temperature[index]?.uv.toString().split(".")[0]}{temp_unit === "Celsius (°C)"? "°C" : "°F"}</Text>
                                     <Flex align={"center"} gap={2}>
                                         <IoMdWater color={theme.secondColor} />
                                         <Text fontSize={{base: "10px", sm: "sm", md: "lg"}}>{plotData?.humidity[index]?.uv.toString().split(".")[0]}%</Text>
                                     </Flex>
                                     <Flex align={"center"} gap={2}>
                                         <FaWind color={theme.secondColor} />
-                                        <Text fontSize={{base: "10px", sm: "sm", md: "lg"}}>{plotData?.wind[index]?.uv.toString().split(".")[0]} mph</Text>
+                                        <Text fontSize={{base: "10px", sm: "sm", md: "lg"}}>{plotData?.wind[index]?.uv.toString().split(".")[0]} {wind_unit === "kph"? "kph" : "mph"}</Text>
                                     </Flex>
                                     <Flex align={"center"} gap={2}>
                                         <FaWeightHanging color={theme.secondColor} />
-                                        <Text fontSize={{base: "10px", sm: "sm", md: "lg"}}>{plotData?.pressure[index]?.uv.toString().split(".")[0]}</Text>
+                                        <Text fontSize={{base: "10px", sm: "sm", md: "lg"}}>{plotData?.pressure[index]?.uv.toString().split(".")[0]} {pressure_unit}</Text>
                                     </Flex>
                                     
                                     
@@ -107,7 +112,7 @@ const HourlyForecastAccordion = ({ weather, loadingToUse }: { weather: WeatherPr
                                     <Flex justifyContent={"space-between"} w={"100%"}>
                                         <Box>
                                             <Text fontWeight={"bolder"}>Feels Like</Text>
-                                            <Text>{plotData?.feelslike_c[index]?.uv.toString().split(".")[0]} °</Text> 
+                                            <Text>{temp_unit === "Celsius (°C)" ? plotData?.feelslike_c[index]?.uv.toString().split(".")[0] : plotData?.feelslike_f[index]?.uv.toString().split(".")[0]} °</Text> 
                                         </Box>
                                         <Box>
                                             <Text fontWeight={"bolder"}>Cloud Cover</Text>
@@ -115,15 +120,15 @@ const HourlyForecastAccordion = ({ weather, loadingToUse }: { weather: WeatherPr
                                         </Box>
                                         <Box>
                                             <Text fontWeight={"bolder"}>Pressure</Text>
-                                            <Text>{plotData?.pressure[index]?.uv.toString().split(".")[0]}</Text> 
+                                            <Text>{plotData?.pressure[index]?.uv.toString().split(".")[0]} {pressure_unit}</Text> 
                                         </Box>
                                         <Box>
                                             <Text fontWeight={"bolder"}>Dew Point</Text>
-                                            <Text>{plotData?.dewpoint_c[index]?.uv.toString().split(".")[0]} °</Text> 
+                                            <Text>{temp_unit === "Celsius (°C)" ? plotData?.dewpoint_c[index]?.uv.toString().split(".")[0] : plotData?.dewpoint_f[index]?.uv.toString().split(".")[0]} °</Text> 
                                         </Box>
                                         <Box>
                                             <Text fontWeight={"bolder"}>Precipitation</Text>
-                                            <Text>{plotData?.precipitation[index]?.uv.toString().split(".")[0]} mm</Text> 
+                                            <Text>{plotData?.precipitation[index]?.uv.toString().split(".")[0]} {precipitation_unit}</Text> 
                                         </Box>
                                         <Box>
                                             <Text fontWeight={"bolder"}>UV Index</Text>

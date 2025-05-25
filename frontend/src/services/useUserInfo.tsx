@@ -40,7 +40,7 @@ const useUserInfo = () => {
         fetchUserInfo()
     }, [])
 
-    return {userInfo, userInfoError, userInfoLoading, refetchUserInfo: fetchUserInfo}
+    return {userInfo, setUserInfo, userInfoError, userInfoLoading, refetchUserInfo: fetchUserInfo}
 }
 
 export default useUserInfo

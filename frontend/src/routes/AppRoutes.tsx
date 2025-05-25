@@ -9,6 +9,8 @@ import Settings from "../components/features/Settings";
 import AuthRoute from "../hooks/AuthRoute";
 import HourlyForecast from "../components/layouts/HourlyForecast";
 import Impact from "../components/layouts/Impact";
+import ResetPassword from "../components/features/ResetPassword";
+import Admin from "../components/layouts/Admin";
 
 
 const AppRoutes = () => {
@@ -17,9 +19,11 @@ const AppRoutes = () => {
     return (
         <Routes>
             <Route path="/" element={<MainContent theme={theme} />} />
-            <Route path="/impact" element={<Impact theme={theme} />} />            
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/impact" element={<Impact />} />            
             <Route path="/hourly" element={<HourlyForecast theme={theme} />} />
             <Route path="/hourly/:location" element={<HourlyForecast theme={theme} />} />
+            <Route path="/password" element={<ResetPassword />} />
             <Route path="/search/:location" element={<MainContent theme={theme} />} />
             <Route path="/dashboard" element={<MainContent theme={theme} />} />
             <Route path="/signin" element={

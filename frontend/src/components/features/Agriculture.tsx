@@ -6,16 +6,31 @@ import { PiWindFill } from "react-icons/pi";
 import { WiHumidity } from "react-icons/wi";
 import { GoSun } from "react-icons/go";
 import AreaChartDashboard from "../common/charts/AreaChartDashboard";
+import { useContext } from "react";
+import MainContext from "../../Contexts/MainContext";
 
 
 const Agriculture = ({weatherToDisplay}: {weatherToDisplay: WeatherProps}) => {
     
-    const temperature = parseInt(weatherToDisplay?.current?.temp_c.toString())
-    const precipitation = parseInt(weatherToDisplay?.current?.precip_mm.toString())
-    const wind = parseInt(weatherToDisplay?.current?.wind_kph.toString())
+    const {userSettingParam} = useContext(MainContext)
+
+    if (!userSettingParam) {
+        return <p>Loading...</p>
+    }
+    
+    const temp_unit = userSettingParam?.settings?.data[0]?.value
+    const wind_unit = userSettingParam?.settings?.data[1]?.value
+    const precipitation_unit = userSettingParam?.settings?.data[3]?.value
+    
+    const temperature = parseInt(temp_unit === "Celsius (°C)" ? weatherToDisplay?.current?.temp_c.toString() : weatherToDisplay?.current?.temp_f.toString())
+    const precipitation = parseInt(precipitation_unit === "mm" ? weatherToDisplay?.current?.precip_mm.toString() : weatherToDisplay?.current?.precip_in.toString())
+    const wind = parseInt(wind_unit === "kph" ? weatherToDisplay?.current?.wind_kph.toString() : weatherToDisplay?.current?.wind_mph.toString())
     const uvIndex = parseInt(weatherToDisplay?.current?.uv.toString())
     const humidity = parseInt(weatherToDisplay?.current?.humidity.toString())
 
+    
+    
+    
     const options: { label: string; key: string; icon: React.ReactElement }[] = [
         { label: "Temperature", key: "temperature", icon:  <TbTemperature size={20}/>},
         { label: "Humidity", key: "humidity", icon:  <WiHumidity size={20} />},
@@ -37,6 +52,7 @@ const Agriculture = ({weatherToDisplay}: {weatherToDisplay: WeatherProps}) => {
                 color={"rgb(251, 255, 0)"}
                 marginBlock={5}
             >
+                <p>{temperature}</p>
                 <Image src="/public/farmer.png" h={"500px"}/>
                 <Flex direction={"column"}>
                     <Flex justify={"space-between"} align={"start"}>
@@ -68,7 +84,7 @@ const Agriculture = ({weatherToDisplay}: {weatherToDisplay: WeatherProps}) => {
                             bg={"#17222b"}
                             p={2}
                         >
-                            <Heading fontWeight={"bold"} textAlign={"center"}>Temperature: {weatherToDisplay.current?.temp_c.toString().split(".")[0]}°C</Heading>
+                            <Heading fontWeight={"bold"} textAlign={"center"} fontSize={"md"}>Temperature: {temperature} {temp_unit  === "Celsius (°C)" ? "°C" : "°F"}</Heading>
                             <TbTemperature size={80}/>
                             <Text textAlign={"center"}>
                             {
@@ -98,7 +114,7 @@ const Agriculture = ({weatherToDisplay}: {weatherToDisplay: WeatherProps}) => {
                             bg={"#17222b"}
                             p={2}
                         >
-                            <Heading fontWeight={"bold"}>Rainfall: {precipitation}%</Heading>
+                            <Heading fontWeight={"bold"} fontSize={"md"}>Rainfall: {precipitation} {precipitation_unit}</Heading>
                             <BsCloudRain size={80}/>
                             <Text textAlign={"center"}>
                             {
@@ -125,7 +141,7 @@ const Agriculture = ({weatherToDisplay}: {weatherToDisplay: WeatherProps}) => {
                             bg={"#17222b"}
                             p={2}
                         >
-                            <Heading fontWeight={"bold"}>Wind: {wind} kph</Heading>
+                            <Heading fontWeight={"bold"}>Wind: {wind} {wind_unit}</Heading>
                             <PiWindFill size={80} />
                             <Text textAlign={"center"}>
                             {

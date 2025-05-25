@@ -34,11 +34,16 @@ export interface WeatherProps {
       temp_f: number;
       humidity: number;
       wind_kph: number;
+      wind_mph: number;
+      dewpoint_c: number;
+      dewpoint_f: number;
       wind_dir: string;
+      precip_in: number;
       precip_mm: number;
       vis_km: number;
       uv: number;
       pressure_mb: number;
+      pressure_in: number;
       cloud: number;
       air_quality: {
         co: number;
@@ -99,3 +104,9 @@ export interface Favorite
     user_id: string;
     Details: LocationProps
 }
+
+
+export interface weatherSettings {
+        key: string;
+        value: string;
+}[];

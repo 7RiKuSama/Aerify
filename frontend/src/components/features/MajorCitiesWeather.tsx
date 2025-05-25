@@ -9,6 +9,9 @@ const MajorCitiesWeather = () => {
     const [weatherList, setWeatherList] = useState<WeatherProps[]>([]);
     const [loading, setLoading] = useState(true);
     const { theme } = useContext(MainContext)
+    const {userSettingParam} = useContext(MainContext)
+
+    const temp_unit = userSettingParam?.settings?.data[0]?.value
 
     useEffect(() => {
         const fetchAll = async () => {
@@ -65,14 +68,15 @@ const MajorCitiesWeather = () => {
                     />
                     </Box>
                     <Box>
-                    <Text fontSize="md" fontWeight="semibold">{weather.location.name}</Text>
-                    <Text fontSize="xs" color="gray.400">{weather.current.condition.text}</Text>
+                    <Text fontSize="md" fontWeight="semibold">{weather?.location?.name}</Text>
+                    <Text fontSize="xs" color="gray.400">{weather?.current?.condition?.text}</Text>
                     </Box>
                 </Flex>
 
                 {/* Right side: Temperature */}
                 <Text fontSize="lg" fontWeight="bold">
-                    {Math.round(weather.current.temp_c)}°C
+                    {Math.round(temp_unit === "Celsius (°C)" ? weather.current.temp_c : weather.current.temp_f)}
+                    {temp_unit === "Celsius (°C)" ? "°C" : "°F"}
                 </Text>
                 </Flex>
             ))}

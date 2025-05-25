@@ -21,25 +21,18 @@ import { FiSunset } from "react-icons/fi";
 
 const Home = ({ height, weather, isLoading }: { height: string; weather: WeatherProps; isLoading: boolean }) => {
     
-    const { theme, unit } = useContext(MainContext);
-    // Add a check to ensure `weather` and `weather.current` exist
-    if ( isLoading || !weather || !weather.location || !weather.current) {
-        return (
-            <Box p={10}>
-                <Stack gap="6" maxW="100%">
-                    <HStack width="full">
-                        <SkeletonText noOfLines={15} />
-                    </HStack>
-                <Skeleton 
-                    height="100%"
-                />
-            </Stack>
-          </Box>
-          )
+    const { theme, unit, userSettingParam } = useContext(MainContext)
+
+    if (isLoading || !weather || !weather.location || !weather.current || !userSettingParam) {
+    return <p>...</p>;
     }
-    const locationImageResult = useLocationImage(weather.location.country)
-    const {flag, isFlagLoading} = useCountryFlag(weather.location.country)
-    
+
+    const locationImageResult = useLocationImage(weather?.location?.country ?? "");
+    const { flag, isFlagLoading } = useCountryFlag(weather?.location?.country ?? "");
+
+    if (locationImageResult.imageLoading) {
+    return <p>...</p>;
+    }
     if (locationImageResult.imageLoading ) {
         return (
         <Box>
@@ -53,6 +46,13 @@ const Home = ({ height, weather, isLoading }: { height: string; weather: Weather
       </Box>
       )
     }
+
+    const temp_unit = userSettingParam?.settings?.data[0]?.value
+    const wind_unit = userSettingParam?.settings?.data[1]?.value
+    const pressure_unit = userSettingParam?.settings?.data[2]?.value
+    const precipitation_unit = userSettingParam?.settings?.data[3]?.value
+    
+
     return (
         <>
             <Flex
@@ -71,7 +71,11 @@ const Home = ({ height, weather, isLoading }: { height: string; weather: Weather
                     p={2}
                 >
                     <GridItem colSpan={{ md: 2, lg: 1 }}>
-                        <WeatherStatCard value={weather.current.temp_c} label={"Temperature"} unit={"C"} forecast={false}>
+                        <WeatherStatCard 
+                            value={temp_unit === "Celsius (°C)"? weather.current.temp_c : weather.current.temp_f} 
+                            label={"Temperature"} unit={temp_unit === "Celsius (°C)"? "°C" : "°F"} 
+                            forecast={false}
+                        >
                             <FaTemperatureEmpty color={theme.secondColor} />
                         </WeatherStatCard>
                     </GridItem>
@@ -81,12 +85,15 @@ const Home = ({ height, weather, isLoading }: { height: string; weather: Weather
                         </WeatherStatCard>
                     </GridItem>
                     <GridItem>
-                        <WeatherStatCard value={weather.current.wind_kph} label={"Wind"} unit={`kph (${weather.current.wind_dir})`} forecast={false}>
+                        <WeatherStatCard 
+                            value={wind_unit === "kph"? weather.current.wind_kph: weather.current.wind_mph} 
+                            label={"Wind"} unit={`${wind_unit === "kph"? "kph": "mph"} (${weather.current.wind_dir})`} 
+                        forecast={false}>
                             <FaWind color={theme.secondColor} />
                         </WeatherStatCard>
                     </GridItem>
                     <GridItem colSpan={{ md: 1, lg: 1 }}>
-                        <WeatherStatCard value={weather.current.precip_mm} label={"Precipitation"} unit={"mm"} forecast={false}>
+                        <WeatherStatCard value={precipitation_unit === "mm"? weather.current.precip_mm: weather.current.precip_in} label={"Precipitation"} unit={precipitation_unit === "mm"? "mm" : "inch"} forecast={false}>
                             <IoIosRainy color={theme.secondColor} />
                         </WeatherStatCard>
                     </GridItem>
@@ -101,7 +108,7 @@ const Home = ({ height, weather, isLoading }: { height: string; weather: Weather
                         </WeatherStatCard>
                     </GridItem>
                     <GridItem>
-                        <WeatherStatCard value={weather.current.pressure_mb} label={"Pressure"} unit={"mb"} forecast={false}>
+                        <WeatherStatCard value={pressure_unit === "inch"? weather.current.pressure_in : weather.current.pressure_mb} label={"Pressure"} unit={pressure_unit === "inch"? "inch" : "mb"} forecast={false}>
                             <FaWeightHanging color={theme.secondColor} />
                         </WeatherStatCard>
                     </GridItem>
@@ -160,7 +167,7 @@ const Home = ({ height, weather, isLoading }: { height: string; weather: Weather
                                 <Text>{weather.location.name}</Text>
                                 <Text display={{base: "none", md: "block"}} fontWeight={"normal"}>, {weather.location.country}</Text>
                                 <Image
-                                    src={!isFlagLoading && flag ? flag : ""}
+                                    src={!isFlagLoading && flag ? flag : undefined}
                                     alt={`${weather.location.country} flag`}
                                     width="auto"
                                     height={{base: "15px", sm: "25px"}}

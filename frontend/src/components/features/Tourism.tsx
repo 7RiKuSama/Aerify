@@ -8,9 +8,19 @@ import { GoSun } from "react-icons/go";
 import AreaChartDashboard from "../common/charts/AreaChartDashboard";
 import { FaCameraRetro, FaHiking, FaRegSmileBeam } from "react-icons/fa";
 import { MdWarningAmber } from "react-icons/md";
+import MainContext from "../../Contexts/MainContext";
+import { useContext } from "react";
 
 
 const Tourism = ({weatherToDisplay}: {weatherToDisplay: WeatherProps}) => {
+    
+    const {userSettingParam} = useContext(MainContext)
+    
+        if (!userSettingParam) {
+            return <p>Loading...</p>
+        }
+
+    const temp_unit = userSettingParam?.settings?.data[0]?.value
     
     const temperature = parseInt(weatherToDisplay.current?.temp_c.toString().split(".")[0])
     const precipitation = parseInt(weatherToDisplay?.current?.precip_mm.toString())
@@ -82,7 +92,7 @@ const Tourism = ({weatherToDisplay}: {weatherToDisplay: WeatherProps}) => {
                                     <Image src={weatherToDisplay?.forecast?.forecastday[0]?.day?.condition?.icon}/>
                                     <Flex direction={"column"}>
                                         <Text fontWeight={"bold"} fontSize={"xl"}>{weatherToDisplay?.current?.condition?.text}</Text>
-                                        <Text fontWeight={"bold"}>{temperature}°</Text>
+                                        <Text fontWeight={"bold"}>{temp_unit === "Celsius (°C)" ? weatherToDisplay?.current?.temp_c.toString() : weatherToDisplay?.current?.temp_f.toString()}°</Text>
                                     </Flex>
                                 </Flex>
                         </Flex>

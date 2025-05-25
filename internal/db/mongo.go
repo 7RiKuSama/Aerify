@@ -18,7 +18,7 @@ func NewMongoConnection(username, password string) *MongoConnection {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	uri := fmt.Sprintf("mongodb+srv://rikusama:aqpYIfmEszOIxmtI@cluster0.havtds4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+	uri := fmt.Sprintf("mongodb+srv://rikusama:ghalem31@cluster0.havtds4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))

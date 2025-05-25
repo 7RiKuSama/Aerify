@@ -17,20 +17,6 @@ func main() {
 	defer dbConnect.Disconnect(ctx)
 	myDataBase := db.DbInit(dbConnect.Client)
 
-	// id := "67f9afc44833f193f59d4169"
-
-	// hexID, err := primitive.ObjectIDFromHex(id)
-
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// err = myDataBase.Users.DeleteUser(ctx, hexID)
-
-	// if err != nil {
-	// 	panic(err)
-	// }
-
 	router := api.NewRouter()
 
 	handlers := api.HandlersInit(myDataBase)
@@ -45,6 +31,20 @@ func main() {
 		protected.POST("/favorite/:id", handlers.HandleCreateFavorite)
 		protected.DELETE("/favorite/:id", handlers.HandleDeleteFavorite)
 		protected.DELETE("/favorite", handlers.HandleDeleteAllFavorites)
+		protected.GET("/settings", handlers.HandleGetSettings)
+		protected.PUT("/user", handlers.HandleUpdateUser)
+		protected.GET("/user/logout", handlers.HandleLogout)
+		protected.DELETE("/user", handlers.HandleDeleteUser)
+		protected.POST("/password", handlers.HandleUpdatePassword)
+		
+		
+		protected.GET("/admin/users", handlers.HandleGetFirstTenUsers)
+		protected.GET("admin/stat/users", handlers.HandleGetUserCount)
+		protected.GET("admin/stat/deleted", handlers.HandleGetDeletedCount)
+		protected.GET("/admin/user", handlers.HandleGetUsers)
+		protected.DELETE("/admin/users/:id", handlers.HandleDeleteUserByID)
+		protected.GET("/admin/stat/connected", handlers.HandleGetConnectedCount)
+		protected.GET("/admin/stat/connected/data", handlers.HandleGetConnections)
 	}
 
 	router.Engine.Run(":4000")

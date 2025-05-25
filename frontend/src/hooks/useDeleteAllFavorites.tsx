@@ -1,12 +1,14 @@
 import { useState } from "react"
 import { Errors } from "../types/error"
+import { useNavigate } from "react-router-dom"
 
 
 const useDeleteAllFavorites = () => {
     const [error, setError] = useState<Errors|null>(null)
     const [loading, setLoading] = useState(false) 
+    const navigate = useNavigate()
     
-    const deleteFavorite = async () => {
+    const deleteFavorites = async () => {
         setLoading(true)
         
         try {
@@ -23,6 +25,7 @@ const useDeleteAllFavorites = () => {
                     message: "Something happned while deleting favorites."
                 })
             }
+            navigate("/dashboard")
         } catch (error) {
             throw new Error(error instanceof Error ? error.message : String(error))
         } finally {
@@ -30,7 +33,7 @@ const useDeleteAllFavorites = () => {
         }
     }
 
-    return {deleteFavorite, loading, error}
+    return {deleteFavorites, loading, error}
 }
 
 

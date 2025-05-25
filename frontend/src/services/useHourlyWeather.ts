@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import MainContext from "../Contexts/MainContext";
 
 // interface HourlyWeatherProps {
 //   time: string;
@@ -14,27 +15,34 @@ import { useEffect, useState } from "react";
 
 const useHourlyWeather = (apiData: any, day: number) => {
   const [chartData, setChartData] = useState<any>({}); // Changed to store multiple types
-
+  const {userSettingParam} = useContext(MainContext)
+  
   useEffect(() => {
     if (apiData && apiData.forecast && apiData.forecast.forecastday) {
       const forecastDay = apiData.forecast.forecastday[day]; // Get data for the first day
 
+      const temp_unit = userSettingParam?.settings?.data[0]?.value
+      const wind_unit = userSettingParam?.settings?.data[1]?.value
+      const precipitation_unit = userSettingParam?.settings?.data[3]?.value
+      const pressure_unit = userSettingParam?.settings?.data[2]?.value
+      
       if (forecastDay.hour) {
         const filteredData = forecastDay.hour.map((hour: any) => ({
           time: hour.time,         // Time (e.g., "00:00", "01:00")
-          temp: hour.temp_c,       // Temperature
+          temp: temp_unit === "Celsius (°C)" ? hour.temp_c : hour.temp_f,       // Temperature
           humidity: hour.humidity, // Humidity
-          rain: hour.precip_mm || 0, // Rain in mm
-          windSpeed: hour.wind_kph || 0, // Wind Speed
+          rain: precipitation_unit === "mm" ? hour.precip_mm : hour.precip_in,// Rain in mm
+          windSpeed: wind_unit === "kph" ? hour.wind_kph : hour.wind_mph, // Wind Speed
           uvIndex: hour.uv || 0,   // UV Index
           precipitation: hour.precip_mm || 0, // Precipitation
-          pressure: hour.pressure_mb || hour.pressure, // Air Pressure
+          pressure: pressure_unit === "mb" ? hour.pressure_mb : hour.pressure_in, // Air Pressure
           condition: hour.condition.text, // Weather Condition
           dewpoint_c: hour.dewpoint_c,
           dewpoint_f: hour.dewpoint_f,
           visibility: hour.vis_km,
           cloud: hour.cloud,
           feelslike_c: hour.feelslike_c,
+          feelslike_f: hour.feelslike_f,
           icon: hour.condition.icon
         }));
 
@@ -96,6 +104,10 @@ const useHourlyWeather = (apiData: any, day: number) => {
             name: data.time.substring(11),
             uv: data.feelslike_c 
           })),
+          feelslike_f: filteredData.map((data: any) => ({
+            name: data.time.substring(11),
+            uv: data.feelslike_f
+          }))
         });
       }
     }

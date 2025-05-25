@@ -6,15 +6,33 @@ import { PiWindFill } from "react-icons/pi";
 import { FaWeightHanging } from "react-icons/fa";
 import { GoSun } from "react-icons/go";
 import AreaChartDashboard from "../common/charts/AreaChartDashboard";
+import { useContext } from "react";
+import MainContext from "../../Contexts/MainContext";
 
 
 const Fishing = ({weatherToDisplay}: {weatherToDisplay: WeatherProps}) => {
     
-    const temperature = parseInt(weatherToDisplay.forecast?.forecastday[0]?.day?.avgtemp_c.toString().split(".")[0])
-    const precipitation = parseInt(weatherToDisplay?.current?.precip_mm.toString())
-    const wind = parseInt(weatherToDisplay?.current?.wind_kph.toString())
+    const {userSettingParam} = useContext(MainContext)
+    
+    const temp_unit = userSettingParam?.settings?.data[0]?.value
+    const wind_unit = userSettingParam?.settings?.data[1]?.value
+    const precipitation_unit = userSettingParam?.settings?.data[3]?.value
+    const pressure_unit = userSettingParam?.settings?.data[2]?.value
+
+
+    const temperature = parseInt(temp_unit === "Celsius (°C)" ? weatherToDisplay?.current?.temp_c.toString() : weatherToDisplay?.current?.temp_f.toString())
+    const precipitation = parseInt(precipitation_unit === "mm" ? weatherToDisplay?.current?.precip_mm.toString() : weatherToDisplay?.current?.precip_in.toString())
+    const wind = parseInt(wind_unit === "kph" ? weatherToDisplay?.current?.wind_kph.toString() : weatherToDisplay?.current?.wind_mph.toString())
     const uvIndex = parseInt(weatherToDisplay?.current?.uv.toString())
-    const pressure = parseInt(weatherToDisplay?.current?.pressure_mb.toString())
+    const pressure = parseInt(pressure_unit === "mb" ? weatherToDisplay?.current?.pressure_mb.toString() : weatherToDisplay?.current?.pressure_in.toString())
+
+    
+    
+    
+    
+    
+   
+
     const options: { label: string; key: string; icon: React.ReactElement }[] = [
             { label: "Temperature", key: "temperature", icon:  <TbTemperature size={20}/>},
             { label: "Pressure", key: "pressure", icon:  <FaWeightHanging size={20} />},
@@ -52,7 +70,7 @@ const Fishing = ({weatherToDisplay}: {weatherToDisplay: WeatherProps}) => {
                                     <Image src={weatherToDisplay?.forecast?.forecastday[0]?.day?.condition?.icon}/>
                                     <Flex direction={"column"}>
                                         <Text fontWeight={"bold"} fontSize={"xl"}>{weatherToDisplay?.current?.condition?.text}</Text>
-                                        <Text fontWeight={"bold"}>{weatherToDisplay?.current?.temp_c.toString().split(".")[0]}°</Text>
+                                        <Text fontWeight={"bold"}>{temperature}°</Text>
                                     </Flex>
                                 </Flex>
                         </Flex>
@@ -70,7 +88,7 @@ const Fishing = ({weatherToDisplay}: {weatherToDisplay: WeatherProps}) => {
                             bg={"#17222b"}
                             p={2}
                         >
-                            <Heading fontWeight={"bold"} textAlign={"center"}>Temperature: {weatherToDisplay.current?.temp_c.toString().split(".")[0]}°C</Heading>
+                            <Heading fontWeight={"bold"} textAlign={"center"} fontSize={"md"}>Temperature: {temperature} {temp_unit  === "Celsius (°C)" ? "°C" : "°F"}</Heading>
                             <TbTemperature 
                                 size={80}
                             />
@@ -98,7 +116,7 @@ const Fishing = ({weatherToDisplay}: {weatherToDisplay: WeatherProps}) => {
                             bg={"#17222b"}
                             p={2}
                         >
-                            <Heading fontWeight={"bold"}>Rainfall: {precipitation}%</Heading>
+                            <Heading fontWeight={"bold"}>Rainfall: {precipitation} {precipitation_unit}</Heading>
                             <BsCloudRain size={80} />
                             <Text textAlign={"center"}>
                             {
@@ -124,7 +142,7 @@ const Fishing = ({weatherToDisplay}: {weatherToDisplay: WeatherProps}) => {
                             bg={"#17222b"}
                             p={2}
                         >
-                            <Heading fontWeight={"bold"}>Wind: {wind} kph</Heading>
+                            <Heading fontWeight={"bold"}>Wind: {wind} {wind_unit}</Heading>
                             <PiWindFill size={80} />
                             <Text textAlign={"center"}>
                             {
@@ -149,7 +167,7 @@ const Fishing = ({weatherToDisplay}: {weatherToDisplay: WeatherProps}) => {
                             bg={"#17222b"}
                             p={2}
                         >
-                            <Heading fontWeight={"bold"}>Pressure: {pressure}mb</Heading>
+                            <Heading fontWeight={"bold"}>Pressure: {pressure} {pressure_unit}</Heading>
                             <FaWeightHanging size={80} color={"rgb(0, 225, 255)"}/>
                             <Text textAlign={"center"}>
                             {
